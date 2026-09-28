@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang='zh-CN'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <title>个股技术分析助手</title>
+  <style>
+    :root{--bg:#07100f;--panel:#0d1816;--panel2:#111f1c;--line:#233632;--text:#ecf4f1;--muted:#8fa49e;--green:#20c997;--green2:#76e2be;--red:#ff5d68;--amber:#f4bd4b;--blue:#62a9ff;--shadow:0 16px 42px rgba(0,0,0,.28)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 75% -10%,#17352e 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh}
+    button,input{font:inherit}.app{max-width:1500px;margin:auto;padding:20px 24px 44px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:38px;height:38px;border:1px solid #31554b;background:linear-gradient(145deg,#1dd3a3,#0a6c56);border-radius:11px;display:grid;place-items:center;font-weight:900;color:#03140f;box-shadow:0 0 25px rgba(32,201,151,.22)}.brand h1{font-size:17px;margin:0;letter-spacing:.04em}.brand p{font-size:11px;color:var(--muted);margin:3px 0 0}.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
+    .search-shell{background:linear-gradient(145deg,rgba(24,44,39,.95),rgba(12,24,21,.95));border:1px solid #29423c;border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px}.search-row{display:flex;gap:10px}.search{flex:1;display:flex;align-items:center;border:1px solid #38534d;background:#081411;border-radius:12px;padding:0 14px;transition:.2s}.search:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(32,201,151,.1)}.search svg{width:18px;color:var(--muted)}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--text);padding:13px;font-size:15px}.search button{border:0;background:transparent;color:var(--muted);cursor:pointer}.run{border:0;border-radius:12px;background:var(--green);color:#052018;font-weight:800;padding:0 24px;cursor:pointer;transition:.2s}.run:hover{transform:translateY(-1px);background:#34d9aa}.chips{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}.chips span{font-size:11px;color:var(--muted)}.chip{border:1px solid #2b443e;background:#10201c;color:#b9cbc6;padding:6px 10px;border-radius:999px;cursor:pointer;font-size:12px}.chip:hover{border-color:#4f7f72;color:white}
+    .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:14px;margin-bottom:14px}.card{background:linear-gradient(145deg,rgba(16,31,27,.96),rgba(10,20,18,.96));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.stock-card{padding:22px}.stock-head{display:flex;justify-content:space-between;gap:20px}.eyebrow{font-size:11px;color:var(--green2);letter-spacing:.1em;text-transform:uppercase}.identity{display:flex;align-items:baseline;gap:10px;margin-top:8px}.identity h2{font-size:28px;margin:0}.code{color:var(--muted);font-size:13px}.price-wrap{text-align:right}.price{font-size:36px;font-weight:750;font-variant-numeric:tabular-nums;line-height:1}.change{font-weight:700;margin-top:7px}.down{color:var(--green)}.up{color:var(--red)}.subtle{font-size:11px;color:var(--muted);margin-top:7px}.verdict{margin-top:23px;padding-top:18px;border-top:1px solid var(--line);display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center}.phase{border:1px solid rgba(244,189,75,.35);background:rgba(244,189,75,.08);color:var(--amber);padding:9px 10px;border-radius:9px;text-align:center;font-size:12px;font-weight:800}.verdict h3{margin:0 0 7px;font-size:18px}.verdict p{margin:0;color:#b6c8c3;font-size:13px;line-height:1.65}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}.metric{background:#0a1613;border:1px solid #1f322e;border-radius:11px;padding:11px}.metric label{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}.metric strong{font-size:15px;font-variant-numeric:tabular-nums}
+    .score-card{padding:20px;display:flex;flex-direction:column}.score-top{display:flex;justify-content:space-between;align-items:center}.score-top h3,.section-title h3{margin:0;font-size:14px}.score-top span{font-size:10px;color:var(--muted)}.score-body{display:grid;grid-template-columns:145px 1fr;gap:18px;align-items:center;flex:1}.gauge{--score:68;position:relative;width:134px;height:134px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--score)*1%),#1c302b 0);display:grid;place-items:center}.gauge:after{content:'';position:absolute;inset:11px;border-radius:50%;background:#0c1815;border:1px solid #233b35}.gauge-copy{position:relative;z-index:2;text-align:center}.gauge-copy strong{font-size:36px}.gauge-copy span{display:block;color:var(--muted);font-size:10px}.bars{display:grid;gap:9px}.bar-row{display:grid;grid-template-columns:80px 1fr 24px;gap:8px;align-items:center;font-size:10px;color:#a9bdb7}.track{height:5px;background:#20332f;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#168e6b,var(--green2));border-radius:10px}.score-foot{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+    .main-grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(320px,.75fr);gap:14px}.chart-card{overflow:hidden}.section-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}.tabs{display:flex;gap:3px;background:#081411;padding:3px;border-radius:8px}.tab{border:0;background:transparent;color:var(--muted);font-size:11px;padding:6px 12px;border-radius:6px;cursor:pointer}.tab.active{color:white;background:#1c332d}.legend{display:flex;gap:13px;color:var(--muted);font-size:10px}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}.chart-wrap{height:350px;padding:12px 14px 6px;position:relative}.chart-wrap canvas{width:100%;height:100%;display:block}.chart-meta{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}.chart-meta div{padding:11px 15px;border-right:1px solid var(--line)}.chart-meta div:last-child{border:0}.chart-meta label{display:block;color:var(--muted);font-size:9px}.chart-meta strong{display:block;margin-top:4px;font-size:12px}
+    .market-card{margin-top:14px;padding:17px}.market-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.market-head h3{font-size:14px;margin:0}.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.market-item{background:#0a1613;border:1px solid #20332e;border-radius:11px;padding:12px}.market-name{display:flex;justify-content:space-between;font-size:11px}.market-item strong{display:block;font-size:18px;margin-top:7px}.spark{width:100%;height:38px;margin-top:7px}.relative{font-size:10px;color:var(--muted);margin-top:5px}.relative b{color:#d9e8e4}
+    .side{display:grid;gap:14px;align-content:start}.panel{padding:17px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.badge{font-size:10px;border:1px solid #315047;border-radius:99px;color:#9fc0b7;padding:4px 8px}.potential-list{display:grid;gap:10px}.potential{padding:13px;border-radius:11px;border:1px solid #213630;background:#0a1714}.potential-top{display:flex;justify-content:space-between;align-items:center}.potential-top strong{font-size:12px}.grade{font-size:10px;color:var(--green2)}.potential p{font-size:11px;line-height:1.55;color:var(--muted);margin:8px 0 0}.level-list{position:relative;padding-left:18px}.level-list:before{content:'';position:absolute;left:5px;top:7px;bottom:7px;width:1px;background:#345048}.level{position:relative;display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1d2f2b}.level:last-child{border:0}.level:before{content:'';position:absolute;left:-17px;width:7px;height:7px;border-radius:50%;background:#456e62;border:2px solid #0e1b18}.level.current:before{background:var(--amber);box-shadow:0 0 10px rgba(244,189,75,.5)}.level label{font-size:11px;color:var(--muted)}.level strong{font-size:12px}.scenarios{display:grid;gap:8px}.scenario{display:grid;grid-template-columns:8px 1fr;gap:9px;padding:10px;background:#0a1613;border-radius:9px}.scenario i{width:8px;height:8px;margin-top:4px;border-radius:50%}.scenario strong{display:block;font-size:11px}.scenario p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.5}.risk-box{background:#091512;border:1px solid #21352f;border-radius:11px;padding:13px}.risk-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{font-size:9px;color:var(--muted);display:block;margin-bottom:6px}.field input{width:100%;border:1px solid #2c443e;border-radius:8px;background:#0e201b;color:white;padding:9px;outline:0}.risk-result{margin-top:11px;display:flex;justify-content:space-between;align-items:flex-end}.risk-result span{font-size:10px;color:var(--muted)}.risk-result strong{font-size:22px;color:var(--amber)}
+    .loading{position:fixed;inset:0;background:rgba(3,10,8,.72);backdrop-filter:blur(8px);display:none;place-items:center;z-index:10}.loading.show{display:grid}.loader{text-align:center}.ring{width:48px;height:48px;border:3px solid #27473e;border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:auto}.loader p{font-size:12px;color:#b8cec7;margin-top:14px}@keyframes spin{to{transform:rotate(360deg)}}
+    .notice{position:fixed;right:22px;bottom:22px;background:#183027;border:1px solid #396657;border-radius:10px;padding:11px 14px;font-size:11px;color:#c9ded7;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}.notice.show{opacity:1;transform:none}
+    @media(max-width:1050px){.hero,.main-grid{grid-template-columns:1fr}.score-body{grid-template-columns:140px 1fr}.side{grid-template-columns:repeat(2,1fr)}.side .panel:last-child{grid-column:span 2}}
+    @media(max-width:720px){.app{padding:14px}.topbar .status{display:none}.search-row{flex-direction:column}.run{padding:13px}.stock-head{flex-direction:column}.price-wrap{text-align:left}.verdict{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.score-body{grid-template-columns:1fr}.gauge{margin:14px auto}.market-grid,.side{grid-template-columns:1fr}.side .panel:last-child{grid-column:auto}.chart-meta{grid-template-columns:repeat(3,1fr)}.chart-wrap{height:290px}}
+  </style>
+</head>
+<body>
+  <div class='app'>
+    <header class='topbar'>
+      <div class='brand'><div class='brand-mark'>TA</div><div><h1>技术走势研判</h1><p>PRICE ACTION · RELATIVE STRENGTH · RISK</p></div></div>
+      <div class='status'><i class='dot'></i><span>分析引擎就绪</span><span>·</span><span id='clock'></span></div>
+    </header>
+
+    <section class='search-shell'>
+      <div class='search-row'>
+        <div class='search'>
+          <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>
+          <input id='stockInput' value='603936' placeholder='输入股票名称或代码，例如：博敏电子 / 603936'>
+          <button id='clearBtn' aria-label='清空'>×</button>
+        </div>
+        <button class='run' id='runBtn'>开始分析</button>
+      </div>
+      <div class='chips'><span>示例</span><button class='chip' data-q='603936'>博敏电子 603936</button><button class='chip' data-q='300986'>志特新材 300986</button><span>默认读取：最新分时 · 120日日K · 上证/深证</span></div>
+    </section>
+
+    <section class='hero'>
+      <article class='card stock-card'>
+        <div class='stock-head'>
+          <div><div class='eyebrow'>A股 · 技术分析快照</div><div class='identity'><h2 id='stockName'>博敏电子</h2><span class='code' id='stockCode'>603936.SH</span></div></div>
+          <div class='price-wrap'><div class='price' id='price'>21.38</div><div class='change down' id='change'>-0.85 · -3.82%</div><div class='subtle' id='dataTime'>2026-09-24 收盘 · 演示数据</div></div>
+        </div>
+        <div class='verdict'><div class='phase' id='phase'>突破回踩 · 待确认</div><div><h3 id='headline'>趋势仍在，短线进入关键验证窗口</h3><p id='summary'>缩量回落未破中期结构，但全天弱于均价线且收盘承接不足。未来1—2个交易日能否收复短期均线，将决定它是健康回踩还是假突破。</p></div></div>
+        <div class='metrics'>
+          <div class='metric'><label>相对深证强弱</label><strong id='relative'>-1.58%</strong></div>
+          <div class='metric'><label>当日振幅</label><strong id='amplitude'>6.93%</strong></div>
+          <div class='metric'><label>量能 / 5日均量</label><strong id='volumeRatio'>0.70×</strong></div>
+          <div class='metric'><label>风险收益比</label><strong id='rr'>1.52</strong></div>
+        </div>
+      </article>
+
+      <article class='card score-card'>
+        <div class='score-top'><h3>技术上涨潜力</h3><span>非收益预测</span></div>
+        <div class='score-body'>
+          <div class='gauge' id='gauge'><div class='gauge-copy'><strong id='score'>68</strong><span>综合评分 / 100</span></div></div>
+          <div class='bars' id='scoreBars'></div>
+        </div>
+        <div class='score-foot' id='scoreFoot'>加分：中期趋势、缩量回踩　扣分：分时弱势、突破未确认</div>
+      </article>
+    </section>
+
+    <main class='main-grid'>
+      <div>
+        <article class='card chart-card'>
+          <div class='section-head'>
+            <div class='tabs'><button class='tab active' data-tab='intraday'>当日分时</button><button class='tab' data-tab='daily'>日K结构</button></div>
+            <div class='legend' id='legend'><span><i style='background:#dfeae7'></i>价格</span><span><i style='background:#f4bd4b'></i>均价</span><span><i style='background:#20c997'></i>成交量</span></div>
+          </div>
+          <div class='chart-wrap'><canvas id='mainChart'></canvas></div>
+          <div class='chart-meta'>
+            <div><label>开盘</label><strong id='open'>22.10</strong></div><div><label>最高</label><strong id='high'>22.75</strong></div><div><label>最低</label><strong id='low'>21.21</strong></div><div><label>均价</label><strong id='avg'>21.87</strong></div><div><label>换手</label><strong id='turnover'>6.67%</strong></div>
+          </div>
+        </article>
+
+        <article class='card market-card'>
+          <div class='market-head'><h3>市场相对强弱</h3><span class='badge'>同期对比</span></div>
+          <div class='market-grid' id='marketGrid'></div>
+        </article>
+      </div>
+
+      <aside class='side'>
+        <section class='card panel'>
+          <div class='section-title'><h3>上涨潜力路径</h3><span class='badge'>双周期</span></div>
+          <div class='potential-list'>
+            <div class='potential'><div class='potential-top'><strong>短线 · 1—5日</strong><span class='grade' id='shortGrade'>中等</span></div><p id='shortText'>先看能否收复21.85—22.10；放量突破22.75才重新确认二波。</p></div>
+            <div class='potential'><div class='potential-top'><strong>波段 · 2—8周</strong><span class='grade' id='swingGrade'>中等偏高</span></div><p id='swingText'>若站稳22.75，首个目标阻力为24.45；更强情景才讨论前高区域。</p></div>
+          </div>
+        </section>
+
+        <section class='card panel'>
+          <div class='section-title'><h3>关键价位</h3><span class='badge'>由近及远</span></div>
+          <div class='level-list' id='levelList'></div>
+        </section>
+
+        <section class='card panel'>
+          <div class='section-title'><h3>情景验证</h3><span class='badge'>条件判断</span></div>
+          <div class='scenarios' id='scenarioList'></div>
+        </section>
+
+        <section class='card panel'>
+          <div class='section-title'><h3>仓位风险测算</h3><span class='badge'>可选</span></div>
+          <div class='risk-box'>
+            <div class='risk-inputs'><div class='field'><label>持仓占总资产（%）</label><input id='positionPct' type='number' value='50' min='0' max='100'></div><div class='field'><label>结构失效价</label><input id='stopPrice' type='number' value='19.70' step='.01'></div></div>
+            <div class='risk-result'><span>触及失效位时<br>预计拖累账户</span><strong id='riskValue'>3.93%</strong></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+  <div class='loading' id='loading'><div class='loader'><div class='ring'></div><p>正在获取分时、日K与市场基准…</p></div></div>
+  <div class='notice' id='notice'>已切换分析标的</div>
+
+  <script>
+    const STOCKS={
+      '603936':{name:'博敏电子',code:'603936.SH',price:21.38,delta:-.85,pct:-3.82,date:'2026-09-24 收盘 · 演示数据',phase:'突破回踩 · 待确认',headline:'趋势仍在，短线进入关键验证窗口',summary:'缩量回落未破中期结构，但全天弱于均价线且收盘承接不足。未来1—2个交易日能否收复短期均线，将决定它是健康回踩还是假突破。',relative:'-1.58%',amp:'6.93%',vr:'0.70×',rr:'1.52',score:68,dims:[['趋势结构',21,25],['突破质量',13,20],['量价承接',10,15],['相对强弱',9,15],['市场适配',7,10]],foot:'加分：中期趋势、缩量回踩　扣分：分时弱势、突破未确认',open:22.10,high:22.75,low:21.21,avg:21.87,turnover:'6.67%',shortGrade:'中等',shortText:'先看能否收复21.85—22.10；放量突破22.75才重新确认二波。',swingGrade:'中等偏高',swingText:'若站稳22.75，首个目标阻力为24.45；更强情景才讨论前高区域。',levels:[['前高压力','24.45'],['再确认位','22.75'],['修复区','21.85—22.10'],['当前价','21.38','current'],['日内防守','21.20'],['结构失效','19.70']],scenarios:[['#20c997','偏强修复','守住21.20并放量站回22.10，突破回踩成立。'],['#f4bd4b','继续观察','21.20—22.10之间缩量震荡，等待方向选择。'],['#ff5d68','转弱失效','放量跌破21.20且无法收回，假突破风险上升；19.70下方结构失效。']],market:[['博敏电子',-3.82,-1.58],['上证指数',-1.13,-.45],['深证成指',-2.24,-.88]],seed:7},
+      '300986':{name:'志特新材',code:'300986.SZ',price:11.59,delta:-.43,pct:-3.58,date:'2026-09-24 收盘 · 演示数据',phase:'低位筑底 · 弱反弹',headline:'并非高位出货，但趋势反转仍未确认',summary:'长期下跌后处于低位震荡，缩量回落更接近反弹遇阻。均线密集区尚未收复，短线需要价格主动证明承接。',relative:'-1.34%',amp:'4.16%',vr:'0.68×',rr:'1.18',score:51,dims:[['趋势结构',12,25],['突破质量',8,20],['量价承接',10,15],['相对强弱',8,15],['市场适配',6,10]],foot:'加分：低位缩量、MACD修复　扣分：长期趋势向下、均线压制',open:11.89,high:12.08,low:11.58,avg:11.76,turnover:'3.01%',shortGrade:'偏低',shortText:'先收复11.76，再观察12.08能否放量突破；否则仍属弱反弹。',swingGrade:'中等偏低',swingText:'突破12.82后才有资格挑战13.40—13.70长期均线压力。',levels:[['长期压力','13.40—13.70'],['波段阻力','12.82'],['突破确认','12.08'],['修复位','11.76'],['当前价','11.59','current'],['结构失效','10.65']],scenarios:[['#20c997','筑底转强','守住11.34并放量突破12.08，低位结构改善。'],['#f4bd4b','箱体震荡','10.65—12.08之间运行，仍是筑底而非主升。'],['#ff5d68','继续探底','放量跌破10.65，重新测试前低区域。']],market:[['志特新材',-3.58,-1.34],['上证指数',-1.13,-.45],['深证成指',-2.24,-.88]],seed:13}
+    };
+    let current=STOCKS['603936'],activeTab='intraday';
+    const $=id=>document.getElementById(id);
+    const fmt=n=>Number(n).toFixed(2);
+    function rng(seed){let x=seed;return()=>{x=Math.sin(x)*10000;return x-Math.floor(x)}}
+    function lineData(stock,count=ninety()){if(stock.intraday?.length)return stock.intraday.map(x=>x.p);const r=rng(stock.seed),out=[];let p=stock.open;for(let i=0;i<count;i++){const trend=(stock.price-stock.open)/count;p+=trend+(r()-.54)*(stock.high-stock.low)*.085;p=Math.max(stock.low,Math.min(stock.high,p));out.push(p)}out[0]=stock.open;out[out.length-1]=stock.price;return out}
+    function ninety(){return  ninety.v||(ninety.v=96)}
+    function dailyData(stock,count=60){if(stock.daily?.length)return stock.daily.slice(-count);const r=rng(stock.seed+30),out=[];let p=stock.code.startsWith('603')?15.2:13.8;for(let i=0;i<count;i++){const wave=Math.sin(i/7)*.18;const drift=stock.code.startsWith('603')?.12:-.035;p=Math.max(stock.price*.55,p+drift+wave+(r()-.5)*.75);const o=p+(r()-.5)*.35,c=p+(r()-.5)*.6,h=Math.max(o,c)+r()*.42,l=Math.min(o,c)-r()*.42;out.push({o,h,l,c,v:.25+r()*.75})}const scale=stock.price/out[out.length-1].c;out.forEach(d=>{d.o*=scale;d.h*=scale;d.l*=scale;d.c*=scale});return out}
+    function resizeCanvas(canvas){const rect=canvas.getBoundingClientRect(),dpr=devicePixelRatio||1;canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;const c=canvas.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);return {c,w:rect.width,h:rect.height}}
+    function drawGrid(c,w,h){c.strokeStyle='#1d302b';c.lineWidth=1;for(let i=0;i<5;i++){let y=18+i*(h-52)/4;c.beginPath();c.moveTo(48,y);c.lineTo(w-12,y);c.stroke()}for(let i=0;i<6;i++){let x=48+i*(w-60)/5;c.beginPath();c.moveTo(x,18);c.lineTo(x,h-34);c.stroke()}}
+    function drawIntraday(){const {c,w,h}=resizeCanvas($('mainChart'));c.clearRect(0,0,w,h);drawGrid(c,w,h);const data=lineData(current),avgData=current.intraday?.length?current.intraday.map(x=>x.a):data.map((_,i)=>current.avg+(current.open-current.avg)*Math.exp(-i/30)),min=Math.min(...data,...avgData),max=Math.max(...data,...avgData),top=22,bottom=h-54,left=48,right=w-12;const y=v=>top+(max-v)/Math.max(.001,max-min)*(bottom-top),x=i=>left+i*(right-left)/Math.max(1,data.length-1);c.fillStyle='#748a84';c.font='10px sans-serif';for(let i=0;i<5;i++){const v=max-(max-min)*i/4;c.fillText(v.toFixed(2),5,26+i*(bottom-top)/4)}c.strokeStyle='#f4bd4b';c.lineWidth=1.3;c.beginPath();avgData.forEach((v,i)=>i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v)));c.stroke();const grad=c.createLinearGradient(0,top,0,bottom);grad.addColorStop(0,'rgba(220,240,234,.18)');grad.addColorStop(1,'rgba(220,240,234,0)');c.beginPath();data.forEach((v,i)=>i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v)));c.lineTo(right,bottom);c.lineTo(left,bottom);c.closePath();c.fillStyle=grad;c.fill();c.beginPath();data.forEach((v,i)=>i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v)));c.strokeStyle='#e5f0ed';c.lineWidth=1.7;c.stroke();const vols=current.intraday?.length?current.intraday.map(x=>x.v):Array.from({length:48},()=>6+rng(current.seed+80)()*24),maxVol=Math.max(...vols);vols.forEach((v,i)=>{const bh=4+24*v/Math.max(1,maxVol),up=i===0||data[Math.min(i,data.length-1)]>=data[Math.max(0,Math.min(i,data.length-1)-1)];c.fillStyle=up?'rgba(255,93,104,.65)':'rgba(32,201,151,.65)';c.fillRect(left+i*(right-left)/vols.length,bottom+8,Math.max(1,(right-left)/vols.length*.7),bh)});c.fillStyle='#748a84';['09:30','10:30','11:30','14:00','15:00'].forEach((t,i)=>c.fillText(t,left+i*(right-left)/4,h-8))}
+    function drawDaily(){const {c,w,h}=resizeCanvas($('mainChart'));c.clearRect(0,0,w,h);drawGrid(c,w,h);const d=dailyData(current),all=d.flatMap(a=>[a.h,a.l]),min=Math.min(...all),max=Math.max(...all),top=18,bottom=h-52,left=48,right=w-12,bar=(right-left)/d.length,y=v=>top+(max-v)/(max-min)*(bottom-top);d.forEach((a,i)=>{const x=left+i*bar+bar/2,up=a.c>=a.o;c.strokeStyle=up?'#ff5d68':'#20c997';c.fillStyle=c.strokeStyle;c.beginPath();c.moveTo(x,y(a.h));c.lineTo(x,y(a.l));c.stroke();c.fillRect(x-bar*.27,Math.min(y(a.o),y(a.c)),bar*.54,Math.max(1,Math.abs(y(a.o)-y(a.c))))});const ma=n=>d.map((_,i)=>i<n-1?null:d.slice(i-n+1,i+1).reduce((s,a)=>s+a.c,0)/n);[[5,'#f4bd4b'],[10,'#d67ce8'],[20,'#62a9ff']].forEach(([n,col])=>{c.beginPath();ma(n).forEach((v,i)=>{if(v===null)return;i===n-1?c.moveTo(left+i*bar+bar/2,y(v)):c.lineTo(left+i*bar+bar/2,y(v))});c.strokeStyle=col;c.lineWidth=1.2;c.stroke()});c.fillStyle='#748a84';c.font='10px sans-serif';for(let i=0;i<5;i++)c.fillText((max-(max-min)*i/4).toFixed(2),5,25+i*(bottom-top)/4);['07月','08月','09月'].forEach((t,i)=>c.fillText(t,left+i*(right-left)/2,h-8))}
+    function sparkSvg(v,idx,series){let pts=[];if(series?.length){const step=Math.max(1,Math.floor(series.length/45)),data=series.filter((_,i)=>i%step===0),lo=Math.min(...data),hi=Math.max(...data);pts=data.map((n,i)=>`${i*100/Math.max(1,data.length-1)},${35-(n-lo)/Math.max(.001,hi-lo)*30}`)}else{const r=rng((current.seed||7)+idx);let y=22;for(let i=0;i<22;i++){y+=(r()-.55)*8+(v<0?.35:-.2);y=Math.max(5,Math.min(34,y));pts.push(`${i*4.7},${y}`)}}return `<svg class='spark' viewBox='0 0 100 40' preserveAspectRatio='none'><polyline points='${pts.join(' ')}' fill='none' stroke='${v>=0?'#ff5d68':'#20c997'}' stroke-width='1.5'/></svg>`}
+    function render(){
+      $('stockName').textContent=current.name;$('stockCode').textContent=current.code;$('price').textContent=fmt(current.price);$('change').textContent=`${current.delta>0?'+':''}${fmt(current.delta)} · ${current.pct>0?'+':''}${fmt(current.pct)}%`;$('change').className=`change ${current.pct>=0?'up':'down'}`;$('dataTime').textContent=current.date;$('phase').textContent=current.phase;$('headline').textContent=current.headline;$('summary').textContent=current.summary;$('relative').textContent=current.relative;$('amplitude').textContent=current.amp;$('volumeRatio').textContent=current.vr;$('rr').textContent=current.rr;$('score').textContent=current.score;$('gauge').style.setProperty('--score',current.score);$('scoreFoot').textContent=current.foot;
+      $('scoreBars').innerHTML=current.dims.map(d=>`<div class='bar-row'><span>${d[0]}</span><div class='track'><div class='fill' style='width:${d[1]/d[2]*100}%'></div></div><b>${d[1]}</b></div>`).join('');
+      ['open','high','low','avg'].forEach(k=>$(k).textContent=fmt(current[k]));$('turnover').textContent=current.turnover;$('shortGrade').textContent=current.shortGrade;$('shortText').textContent=current.shortText;$('swingGrade').textContent=current.swingGrade;$('swingText').textContent=current.swingText;
+      $('levelList').innerHTML=current.levels.map(l=>`<div class='level ${l[2]||''}'><label>${l[0]}</label><strong>${l[1]}</strong></div>`).join('');
+      $('scenarioList').innerHTML=current.scenarios.map(s=>`<div class='scenario'><i style='background:${s[0]}'></i><div><strong>${s[1]}</strong><p>${s[2]}</p></div></div>`).join('');
+      $('marketGrid').innerHTML=current.market.map((m,i)=>`<div class='market-item'><div class='market-name'><span>${m[0]}</span><span class='${m[1]>=0?'up':'down'}'>${m[1]>0?'+':''}${m[1]}%</span></div><strong>${i?'指数基准':fmt(current.price)}</strong>${sparkSvg(m[1],i,m[3])}<div class='relative'>${i?'个股相对该指数':'相对主基准'} <b>${m[2]>0?'+':''}${m[2]}%</b></div></div>`).join('');
+      $('stopPrice').value=current.levels.find(x=>x[0]==='结构失效')?.[1]||(current.code.startsWith('603')?'19.70':'10.65');calcRisk();activeTab==='intraday'?drawIntraday():drawDaily();
+    }
+    function calcRisk(){const pos=+$('positionPct').value||0,stop=+$('stopPrice').value||current.price,loss=Math.max(0,(current.price-stop)/current.price);$('riskValue').textContent=(pos*loss).toFixed(2)+'%'}
+    window.TA_DATA_PROVIDER=location.protocol.startsWith('http')?async q=>{const response=await fetch(`/api/analyze?q=${encodeURIComponent(q)}`,{cache:'no-store'});const payload=await response.json();if(!response.ok||!payload.ok)throw new Error(payload.error||'后端分析失败');return payload.data}:null;
+    async function analyze(q){
+      $('loading').classList.add('show');
+      try{
+        /* 接口接入点：window.TA_DATA_PROVIDER(query) 应返回与 STOCKS 条目相同的数据结构。 */
+        const provided=window.TA_DATA_PROVIDER?await window.TA_DATA_PROVIDER(q):null;
+        await new Promise(r=>setTimeout(r,620));
+        const key=Object.keys(STOCKS).find(k=>q.includes(k)||q.includes(STOCKS[k].name));
+        current=provided||STOCKS[key]||STOCKS['603936'];render();showNotice(provided?'Wind实时数据已载入':key?'已载入示例分析':'请通过本地服务打开以查询真实数据');
+      }catch(e){showNotice(e.message||'数据加载失败，请检查数据接口')}finally{$('loading').classList.remove('show')}
+    }
+    function showNotice(t){$('notice').textContent=t;$('notice').classList.add('show');setTimeout(()=>$('notice').classList.remove('show'),2200)}
+    $('runBtn').onclick=()=>analyze($('stockInput').value.trim());$('stockInput').addEventListener('keydown',e=>{if(e.key==='Enter')analyze(e.target.value.trim())});$('clearBtn').onclick=()=>{$('stockInput').value='';$('stockInput').focus()};document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{$('stockInput').value=b.dataset.q;analyze(b.dataset.q)});document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeTab=b.dataset.tab;$('legend').innerHTML=activeTab==='intraday'?`<span><i style='background:#dfeae7'></i>价格</span><span><i style='background:#f4bd4b'></i>均价</span><span><i style='background:#20c997'></i>成交量</span>`:`<span><i style='background:#f4bd4b'></i>MA5</span><span><i style='background:#d67ce8'></i>MA10</span><span><i style='background:#62a9ff'></i>MA20</span>`;render()});$('positionPct').oninput=calcRisk;$('stopPrice').oninput=calcRisk;window.addEventListener('resize',()=>activeTab==='intraday'?drawIntraday():drawDaily());setInterval(()=>$('clock').textContent=new Date().toLocaleTimeString('zh-CN',{hour12:false}),1000);render();if(window.TA_DATA_PROVIDER)analyze($('stockInput').value.trim());
+  </script>
+</body>
+</html>
