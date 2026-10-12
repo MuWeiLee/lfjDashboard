@@ -1,0 +1,10 @@
+.embed .shell { display: block; }
+.embed .sidebar { display: none; }
+.embed main { display: block; grid-column: auto; max-width: none; padding: 18px 22px 34px; }
+.embed .topbar { margin-bottom: 16px; }
+.embed-root, .embed { overflow: hidden; }
+.embed .topbar .top-actions { display: none !important; }
+
+@media (max-width: 680px) {
+  .embed main { padding: 12px; }
+}
