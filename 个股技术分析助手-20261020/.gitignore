@@ -1,0 +1,12 @@
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+*.local.json
+*.local.ps1
+
+# Logs and caches
+*.log
+node_modules/
+.DS_Store
+Thumbs.db
