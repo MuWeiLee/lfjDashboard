@@ -1,0 +1,19 @@
+{
+  "name": "shortemotion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "test": "vitest run",
+    "refresh": "node scripts/short-emotion/refresh.mjs",
+    "build:hant-map": "node scripts/short-emotion/build-hant-map.mjs"
+  },
+  "devDependencies": {
+    "opencc-js": "1.0.5",
+    "vitest": "4.0.17"
+  }
+}
