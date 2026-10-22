@@ -1,0 +1,110 @@
+# 短线情绪数据任务（A股 + 台股）
+#
+# 在 Actions 里直接调用 Wind 计算快照，结果推送到 `short-emotion-data` 分支（A股在根目录，台股在 tw/）；
+# 网站页面 /cn、/tw 只读该分支，不需要数据库。需要仓库 Secret：WIND_API_KEY。
+# 北京/台北时间工作日 09:00–15:30 每 30 分钟触发，各市场跑哪些任务见 api/_lib/short-emotion/schedule.js。
+#
+# 页面「刷新」按钮通过 GitHub API 手动运行本工作流（api/_lib/short-emotion/github.js），
+# 传入 target / force / market 三个参数；改这里的 inputs 时要同步改那边，否则手动运行会被 GitHub 拒绝。
+#
+# 时间均为 UTC（北京时间 = UTC+8）。GitHub 定时任务可能延迟几分钟，任务按北京时间判断时段。
+name: Short emotion data
+# 手动运行的标题带市场，页面「刷新」据此查询自己那次任务的进度（api/_lib/short-emotion/github.js）
+run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.target == 'short-emotion' && format('short-emotion {0} refresh', inputs.market) || 'Short emotion data' }}
+
+on:
+  schedule:
+    - cron: "0,30 1-7 * * 1-5"   # 短线情绪工作台
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "要运行的任务"
+        type: choice
+        options:
+          - short-emotion
+        default: short-emotion
+      force:
+        description: "忽略时间窗口，立即刷新全部数据"
+        type: boolean
+        default: true
+      market:
+        description: "市场（all / cn / tw）"
+        type: choice
+        options:
+          - all
+          - cn
+          - tw
+        default: all
+
+permissions:
+  contents: read
+
+jobs:
+  short-emotion:
+    if: github.event.schedule == '0,30 1-7 * * 1-5' || (github.event_name == 'workflow_dispatch' && inputs.target == 'short-emotion')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: short-emotion-data
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    env:
+      DATA_DIR: ${{ github.workspace }}/../short-emotion-data
+    steps:
+      # 还没设置 WIND_API_KEY 时，定时任务直接跳过（避免每 30 分钟一封失败通知）；手动运行照常报错。
+      - name: Check Wind key
+        id: guard
+        run: |
+          if [ -z "$WIND_API_KEY" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "::warning::尚未设置仓库 Secret WIND_API_KEY，本次定时任务跳过。"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          WIND_API_KEY: ${{ secrets.WIND_API_KEY }}
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.skip != 'true'
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          node-version: 22
+      - name: Load data branch
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          mkdir -p "$DATA_DIR"
+          if git fetch --depth=1 origin short-emotion-data; then
+            git archive FETCH_HEAD | tar -x -C "$DATA_DIR"
+            git rev-parse 'FETCH_HEAD^{tree}' > "$RUNNER_TEMP/previous-tree"
+          fi
+      - name: Install Traditional Chinese converter (台股繁体)
+        if: steps.guard.outputs.skip != 'true'
+        run: npm install --prefix "$RUNNER_TEMP/opencc" --no-audit --no-fund opencc-js@1.0.5
+      - name: Refresh snapshot
+        if: steps.guard.outputs.skip != 'true'
+        run: node scripts/short-emotion/refresh.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.force) && '--force' || '' }} --market=${{ (github.event_name == 'workflow_dispatch' && inputs.market) || 'all' }}
+        env:
+          OPENCC_JS_DIR: ${{ runner.temp }}/opencc
+          WIND_API_KEY: ${{ secrets.WIND_API_KEY }}
+          SHORT_EMOTION_STORE: file
+          SHORT_EMOTION_DATA_DIR: ${{ env.DATA_DIR }}
+      - name: Publish data branch
+        # 一个市场失败时，另一个市场已写好的数据照常发布（任务仍会标记为失败）
+        if: ${{ !cancelled() && steps.guard.outputs.skip != 'true' }}
+        run: |
+          cd "$DATA_DIR"
+          # 数据分支不需要 Vercel 预览部署
+          echo '{"git":{"deploymentEnabled":false}}' > vercel.json
+          printf '%s\n' "# short-emotion-data" "" "短线情绪工作台的数据快照，由 GitHub Actions（Short emotion data）自动生成并强制覆盖，请勿手动修改。" > README.md
+          git init -q
+          git checkout -q -b short-emotion-data
+          git add -A
+          tree=$(git write-tree)
+          if [ -f "$RUNNER_TEMP/previous-tree" ] && [ "$tree" = "$(cat "$RUNNER_TEMP/previous-tree")" ]; then
+            echo "数据无变化，跳过推送"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "short-emotion snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" short-emotion-data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
