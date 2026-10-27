@@ -289,7 +289,7 @@ main {
 .anomaly-summary .anomaly-num { color: var(--accent, #e64d3a); margin-left: 2px; font-size: 12px; font-weight: 400; }
 .anomaly-toolbar { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; }
 .anomaly-toolbar::-webkit-scrollbar { display: none; }
-.anomaly-filter, .timeline-toggle {
+.anomaly-filter, .timeline-toggle, .flow-period {
   flex: none;
   min-height: 32px;
   padding: 0 12px;
@@ -301,7 +301,7 @@ main {
   cursor: pointer;
   white-space: nowrap;
 }
-.anomaly-filter.active, .timeline-toggle.active { border-color: var(--ink); background: var(--ink); color: var(--surface); font-weight: 600; }
+.anomaly-filter.active, .timeline-toggle.active, .flow-period.active { border-color: var(--ink); background: var(--ink); color: var(--surface); font-weight: 600; }
 .anomaly-time { display: block; margin: 10px 0 12px; color: var(--muted); font-size: 12px; }
 .anomaly-list { display: grid; gap: 10px; }
 .anomaly-view-state {
@@ -439,6 +439,69 @@ main {
 .timeline-line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .timeline-dot { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
 .timeline-label { fill: var(--muted); font-size: 11px; }
+
+/* 资金流向 */
+.flow-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.flow-controls .segmented { margin-top: 0; }
+/* 金额 / 占比：文字在滑块内，独立放在最右侧 */
+.flow-switch {
+  --flow-count: 2;
+  --flow-index: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: 96px;
+  height: 28px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  cursor: pointer;
+}
+.flow-switch--period { width: 138px; --flow-count: 3; }
+.flow-switch:not(.flow-switch--period) { margin-left: auto; }
+.flow-switch[data-index="1"] { --flow-index: 1; }
+.flow-switch[data-index="2"] { --flow-index: 2; }
+.flow-switch-thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc(100% / var(--flow-count) - 4px);
+  border-radius: 999px;
+  background: var(--ink);
+  transform: translateX(calc(var(--flow-index) * (100% + 4px)));
+  transition: transform .18s ease;
+}
+.flow-switch:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.flow-switch-opt { position: relative; z-index: 1; flex: 1; text-align: center; font-size: 12px; color: var(--muted); transition: color .18s ease; }
+.flow-switch-opt.active { color: var(--surface); font-weight: 600; }
+.flow-chart { position: relative; height: 340px; margin-top: 12px; color: var(--ink); }
+.flow-chart svg { width: 100%; height: 100%; overflow: visible; }
+.flow-series path.line { transition: stroke-width .12s, opacity .12s; }
+.flow-series:hover path.line { stroke-width: 3.2; opacity: 1; }
+.flow-chart.dim .flow-series path.line { opacity: .16; }
+.flow-chart.dim .flow-series:hover path.line { opacity: 1; }
+.flow-chart.dim .flow-series.active path.line { opacity: 1; stroke-width: 3.2; }
+.flow-chart.dim .flow-label { opacity: .22; }
+.flow-chart.dim .flow-label.hover { opacity: 1; }
+.flow-label { cursor: pointer; }
+.flow-tip {
+  position: fixed;
+  z-index: 9998;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s;
+}
+.flow-tip.show { opacity: 1; }
+@media (max-width: 560px) { .flow-chart { height: 300px; } }
 
 .empty, .loading { padding: 24px 0; color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
 

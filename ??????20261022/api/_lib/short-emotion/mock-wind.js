@@ -139,6 +139,49 @@ export function mockWindResult(serverType, toolName, params) {
     if (/概念指数涨跌幅排名前十/.test(question)) {
       return result({ data: [table(["Wind代码", "证券简称", "涨跌幅", "交易时间"], CONCEPTS.map(([code, name, change]) => [code, name, change, qt]))] });
     }
+    // 资金流向：今日流入/流出榜、5/20 日榜、单概念每日序列
+    if (/主力净流出额/.test(question) && /今日/.test(question)) {
+      return result({ data: [table(["Wind代码", "证券简称", "主力净流入额", "成交额", "交易时间"], [
+        ["8841301.WI", "种业指数", 8.6, 120.4, qt],
+        ["8841555.WI", "商业航天指数", 5.2, 88.1, qt],
+        ["8841900.WI", "银行指数", 3.4, 210.6, qt]
+      ])] });
+    }
+    if (/主力净流入额/.test(question) && /今日/.test(question)) {
+      return result({ data: [table(["Wind代码", "证券简称", "主力净流入额", "成交额", "交易时间"], [
+        ["8841416.WI", "人形机器人指数", 26.9, 180.2, qt],
+        ["8841234.WI", "CPO概念指数", 18.4, 96.7, qt],
+        ["8841102.WI", "AI算力指数", 12.7, 143.5, qt],
+        ["8841666.WI", "液冷服务器指数", 7.9, 64.3, qt],
+        ["8841777.WI", "稳定币指数", 4.1, 52.8, qt]
+      ])] });
+    }
+    if (/近\d+日主力净流出额/.test(question)) {
+      return result({ data: [table(["Wind代码", "证券简称", "主力净流出额合计", "成交额合计"], [
+        ["8841301.WI", "种业指数", 18.2, 640.3],
+        ["8841555.WI", "商业航天指数", 9.4, 302.8],
+        ["8841900.WI", "银行指数", 6.1, 880.2]
+      ])] });
+    }
+    if (/近\d+日主力净流入额合计/.test(question)) {
+      const days = Number((question.match(/近(\d+)日/) || [])[1] || 5);
+      const factor = days >= 20 ? 4.2 : 2.1;
+      return result({ data: [table(["Wind代码", "证券简称", "主力净流入额合计", "成交额合计", "主力净流入占比(%)"], CONCEPTS.map(([code, name, change], index) => [code, name, Number((change * 12 * factor).toFixed(2)), Number((change * 96 * factor).toFixed(1)), Number((change * 0.7).toFixed(2))]).concat([["8841301.WI", "种业指数", -18.2 * factor, 640.3 * factor, -2.8]]))] });
+    }
+    if (/每日主力净流入额/.test(question)) {
+      const days = Number((question.match(/近(\d+)个交易日/) || [])[1] || 5);
+      const name = question.replace(/近\d+个交易日.*$/, "");
+      const seed = [...name].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 9;
+      const rows = [];
+      for (let offset = days - 1; offset >= 0; offset -= 1) {
+        const date = new Date(Date.UTC(Number(now.day.slice(0, 4)), Number(now.day.slice(4, 6)) - 1, Number(now.day.slice(6, 8)) - offset));
+        if ([0, 6].includes(date.getUTCDay())) continue;
+        const day = date.toISOString().slice(0, 10).replaceAll("-", "");
+        const amount = Number(((seed % 5) - 2 + (offset % 3) * 1.2).toFixed(2));
+        rows.push([day, amount * 3, 300 + seed]);
+      }
+      return result({ data: [table(["日期", "主力净流入额", "成交额"], rows)] });
+    }
     const conceptOf = question.match(/^(\d{6}\.(?:SZ|SH))所属概念板块$/);
     if (conceptOf) {
       const stock = LIMIT_UP.find(([code]) => code === conceptOf[1]);

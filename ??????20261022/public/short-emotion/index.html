@@ -26,7 +26,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/short-emotion/twsvp.css?v=4">
+  <link rel="stylesheet" href="/short-emotion/twsvp.css?v=8">
 </head>
 <body>
   <div class="app-shell">
@@ -46,6 +46,7 @@
       <div class="tabs" role="tablist" aria-label="页面分区">
         <button class="tab-btn active" data-target="overview" type="button">情绪总览</button>
         <button id="breadth-tab" class="tab-btn" data-target="breadth" type="button">市场广度</button>
+        <button class="tab-btn" data-target="flow" type="button">资金流向</button>
         <button id="themes-tab" class="tab-btn" data-target="themes" type="button">题材雷达</button>
         <button class="tab-btn" data-target="timeline" type="button">情绪路径</button>
       </div>
@@ -105,6 +106,26 @@
         </article>
       </section>
 
+      <section id="flow" class="section">
+        <article class="card flow-panel">
+          <div class="card-head"><h2 class="card-title">主力资金流向</h2><span id="flow-pill" class="pill">单位：亿元</span></div>
+          <div class="flow-controls">
+            <button id="flow-period-switch" class="flow-switch flow-switch--period" type="button" role="group" aria-label="资金周期" data-index="0">
+              <span class="flow-switch-opt active" data-flow-period="today">今天</span>
+              <span class="flow-switch-opt" data-flow-period="5">5日</span>
+              <span class="flow-switch-opt" data-flow-period="20">20日</span>
+              <span class="flow-switch-thumb"></span>
+            </button>
+            <button id="flow-metric-switch" class="flow-switch" type="button" role="switch" aria-checked="false" aria-label="金额与占比切换">
+              <span class="flow-switch-opt" data-flow-opt="amount">金额</span>
+              <span class="flow-switch-opt" data-flow-opt="pct">占比</span>
+              <span class="flow-switch-thumb"></span>
+            </button>
+          </div>
+          <div id="flow-chart" class="flow-chart"></div>
+        </article>
+      </section>
+
       <section id="themes" class="section">
         <article class="card anomaly-panel">
           <div class="card-head"><h2 id="anomaly-title" class="card-title">当日题材异动</h2></div>
@@ -143,13 +164,12 @@
       </section>
 
       <footer class="legal">
-        <p>数据来源：万得 Wind 金融数据服务 · <span id="schedule-note">交易日 09:00–15:00 每30分钟定时更新</span></p>
         <p>仅用于研究与情绪观察，不构成投资建议；请以“行情时间”判断数据新鲜度。</p>
       </footer>
     </main>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="/short-emotion/vendor/html-to-image.js" defer></script>
-  <script type="module" src="/short-emotion/app.js?v=26"></script>
+  <script type="module" src="/short-emotion/app.js?v=37"></script>
 </body>
 </html>

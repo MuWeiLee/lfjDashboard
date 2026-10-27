@@ -7,6 +7,7 @@ import { getStore, storageMode } from "./store.js";
 import { duePlan, scheduleSummary, scheduleFor, MARKETS } from "./schedule.js";
 import { getApiKeys, isMockMode } from "./wind-client.js";
 import { toTraditional } from "./hant.js";
+import { appendTodaySample, refreshWindows, readFundFlow } from "./fund-flow.js";
 
 const MARKET_CONFIG = {
   cn: { engine: cnEngine, transform: async (value) => value },
@@ -35,7 +36,7 @@ const KEY = {
 
 const errorText = (error) => String(error?.message || error);
 const quoteDayOf = (snapshot) => String(snapshot?.quoteTime || "").replace(/\D/g, "").slice(0, 8);
-const ALL_JOBS = { emotion: true, anomalies: true, news: true, cleanup: false };
+const ALL_JOBS = { emotion: true, anomalies: true, news: true, fundFlow: true, cleanup: false };
 
 /**
  * Refreshes whatever is due in the current Beijing 5-minute slot.
@@ -177,6 +178,20 @@ export async function runScheduledRefresh({ force = false, now = new Date(), mar
       result.ran.push("news");
     }).catch((error) => { result.errors.push(`news: ${errorText(error)}`); }));
   }
+  if (market === "cn" && jobs.fundFlow) {
+    tasks.push((async () => {
+      try {
+        const sample = await appendTodaySample(store, { now });
+        if (sample.skipped) result.skipped.push(`fund-flow: ${sample.reason || "本轮榜单为空，保留上一份快照"}`);
+        else result.ran.push("fund-flow");
+        const windows = await refreshWindows(store, { now });
+        result.ran.push(...windows.built);
+        if (windows.errors.length) result.errors.push(...windows.errors.slice(0, 3));
+      } catch (error) {
+        result.errors.push(`fund-flow: ${errorText(error)}`);
+      }
+    })());
+  }
   await Promise.all(tasks);
 
   const engineState = exportEngineState(plan.day);
@@ -189,7 +204,7 @@ export async function runScheduledRefresh({ force = false, now = new Date(), mar
     try {
       const removedDays = await store.historyPrune(SCHEDULE.historyTradingDays);
       const cutoff = new Date(now.getTime() - 3 * 86_400_000).toISOString();
-      for (const prefix of ["lock:", "engine-state:2", "calendar:"]) await store.kvDeleteOlderThan(prefix, cutoff);
+      for (const prefix of ["lock:", "engine-state:2", "calendar:", "fund-flow:today:"]) await store.kvDeleteOlderThan(prefix, cutoff);
       result.ran.push(`cleanup(-${removedDays}d)`);
     } catch (error) {
       result.errors.push(`cleanup: ${errorText(error)}`);
@@ -242,6 +257,11 @@ export async function readResource(resource, market = "cn", { fresh = false } = 
     const dailyHistory = daily.slice(-SCHEDULE.historyTradingDays)
       .map((item) => ({ ...item, phase: classify(item.score, { upRatio: null }).phase }));
     return { tradingDate, history, dailyHistory };
+  }
+  if (resource === "fund-flow") {
+    const latest = await store.kvGet(KEY.emotion).catch(() => null);
+    const tradingDate = latest?.value?.tradingDate || null;
+    return { ...(await readFundFlow(store, { tradingDate })), ...meta(latest) };
   }
   if (resource === "status") {
     const lastRun = await store.kvGet(KEY.lastRun).catch(() => null);

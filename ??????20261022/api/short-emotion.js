@@ -9,7 +9,7 @@
 import { readResource, runScheduledRefresh, NotReadyError, normalizeMarket } from "./_lib/short-emotion/service.js";
 import { requestRefresh, latestRefreshRun, githubToken } from "./_lib/short-emotion/github.js";
 
-const RESOURCES = new Set(["emotion", "anomalies", "history", "news", "status", "refresh-status"]);
+const RESOURCES = new Set(["emotion", "anomalies", "history", "news", "fund-flow", "status", "refresh-status"]);
 
 // 本地模式（未配置 GITHUB_ACTIONS_TOKEN）下，最近一次「点击刷新」直接在本进程调用 Wind 取数。
 // 记录完成态供前端轮询 refresh-status 收尾；进程重启后清空（下一次点击刷新会重建）。

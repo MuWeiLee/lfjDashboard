@@ -10,9 +10,9 @@ describe("短线情绪 schedule (every 30 min, 09:00–15:00 Beijing)", () => {
     expect(due("2026-10-12", "09:00")).toEqual(["news"]);
   });
 
-  it("trading slots refresh market data and news", () => {
+  it("trading slots refresh market data, fund flow and news", () => {
     for (const time of ["09:30", "10:00", "11:30", "13:00", "14:30"]) {
-      expect(due("2026-10-12", time)).toEqual(["anomalies", "emotion", "news"]);
+      expect(due("2026-10-12", time)).toEqual(["anomalies", "emotion", "fundFlow", "news"]);
     }
   });
 
@@ -22,13 +22,13 @@ describe("短线情绪 schedule (every 30 min, 09:00–15:00 Beijing)", () => {
   });
 
   it("15:00 is the last run and includes cleanup", () => {
-    expect(due("2026-10-12", "15:00")).toEqual(["anomalies", "cleanup", "emotion", "news"]);
+    expect(due("2026-10-12", "15:00")).toEqual(["anomalies", "cleanup", "emotion", "fundFlow", "news"]);
     expect(due("2026-10-12", "15:30")).toEqual([]);
   });
 
   it("a delayed GitHub run stays in its 30-minute slot", () => {
     expect(duePlan(bj("2026-10-12", "10:17")).slot).toBe(600);
-    expect(due("2026-10-12", "10:17")).toEqual(["anomalies", "emotion", "news"]);
+    expect(due("2026-10-12", "10:17")).toEqual(["anomalies", "emotion", "fundFlow", "news"]);
   });
 
   it("weekends and off-hours never call Wind", () => {

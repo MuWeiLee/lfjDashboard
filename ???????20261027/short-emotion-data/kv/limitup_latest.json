@@ -1,0 +1,2097 @@
+{
+  "value": {
+    "tradingDate": "20261027",
+    "requestedDate": "20261027",
+    "capturedAt": "2026-10-27T02:06:14.021Z",
+    "quoteTime": "2026-10-27T10:05:43+08:00",
+    "degraded": false,
+    "summary": {
+      "limitUpCount": 34,
+      "limitDownCount": 4,
+      "upDownNet": 30,
+      "maxStreak": 5,
+      "ladderDepth": 2,
+      "firstSealCount": 32,
+      "stCount": 0,
+      "limitDownStCount": 1,
+      "newsConceptFilled": 0,
+      "newsConceptReviewed": 5,
+      "newsConceptAborted": true,
+      "brandConceptChecked": 0,
+      "brandConceptPruned": 0,
+      "brandConceptSkipped": true,
+      "promotionRate": 0.1695,
+      "yesterdayLimitUpCount": 59,
+      "previousLimitDownCount": 28,
+      "negativeFeedbackThemes": 1
+    },
+    "limitDown": {
+      "day": "20261027",
+      "count": 4,
+      "stCount": 1,
+      "stocks": [
+        {
+          "code": "603280.SH",
+          "name": "南方路机",
+          "downTime": "09:25:02",
+          "bucket": "09:30前(竞价)",
+          "concepts": [],
+          "boardType": "主板",
+          "isST": false,
+          "conceptSource": "wind"
+        },
+        {
+          "code": "002731.SZ",
+          "name": "萃华退",
+          "downTime": "09:30:00",
+          "bucket": "09:30-10:00",
+          "concepts": [
+            "黄金珠宝"
+          ],
+          "boardType": "主板",
+          "isST": false,
+          "conceptSource": "wind"
+        },
+        {
+          "code": "603677.SH",
+          "name": "奇精机械",
+          "downTime": "09:38:39",
+          "bucket": "09:30-10:00",
+          "concepts": [
+            "家电"
+          ],
+          "boardType": "主板",
+          "isST": false,
+          "conceptSource": "wind"
+        },
+        {
+          "code": "603669.SH",
+          "name": "灵康药业",
+          "downTime": "09:56:15",
+          "bucket": "09:30-10:00",
+          "concepts": [],
+          "boardType": "主板",
+          "isST": false,
+          "conceptSource": "wind"
+        }
+      ],
+      "concepts": [
+        {
+          "name": "有色金属",
+          "count": 1,
+          "maxStreak": 1,
+          "stocks": [
+            "002731.SZ"
+          ]
+        },
+        {
+          "name": "消费",
+          "count": 1,
+          "maxStreak": 1,
+          "stocks": [
+            "603677.SH"
+          ]
+        }
+      ],
+      "complete": true,
+      "cappedSectors": [],
+      "errors": []
+    },
+    "themeStrength": [
+      {
+        "name": "消费",
+        "upCount": 1,
+        "downCount": 1,
+        "maxUpStreak": 1,
+        "brokenCount": 5,
+        "previousUpCount": 5,
+        "previousMaxStreak": 2,
+        "net": 0,
+        "negativeFeedback": true,
+        "status": "分歧",
+        "tone": "warn"
+      },
+      {
+        "name": "汽车智能化",
+        "upCount": 7,
+        "downCount": 0,
+        "maxUpStreak": 4,
+        "brokenCount": 3,
+        "previousUpCount": 6,
+        "previousMaxStreak": 3,
+        "net": 7,
+        "negativeFeedback": false,
+        "status": "主升",
+        "tone": "up"
+      },
+      {
+        "name": "机器人",
+        "upCount": 4,
+        "downCount": 0,
+        "maxUpStreak": 4,
+        "brokenCount": 6,
+        "previousUpCount": 8,
+        "previousMaxStreak": 3,
+        "net": 4,
+        "negativeFeedback": false,
+        "status": "降温",
+        "tone": "warn"
+      },
+      {
+        "name": "新能源",
+        "upCount": 4,
+        "downCount": 0,
+        "maxUpStreak": 4,
+        "brokenCount": 2,
+        "previousUpCount": 3,
+        "previousMaxStreak": 3,
+        "net": 4,
+        "negativeFeedback": false,
+        "status": "主升",
+        "tone": "up"
+      },
+      {
+        "name": "首发经济",
+        "upCount": 3,
+        "downCount": 0,
+        "maxUpStreak": 2,
+        "brokenCount": 3,
+        "previousUpCount": 4,
+        "previousMaxStreak": 1,
+        "net": 3,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "AI应用与软件",
+        "upCount": 3,
+        "downCount": 0,
+        "maxUpStreak": 2,
+        "brokenCount": 3,
+        "previousUpCount": 4,
+        "previousMaxStreak": 2,
+        "net": 3,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "航空航天与军工",
+        "upCount": 2,
+        "downCount": 0,
+        "maxUpStreak": 4,
+        "brokenCount": 0,
+        "previousUpCount": 2,
+        "previousMaxStreak": 3,
+        "net": 2,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "电力与电网",
+        "upCount": 2,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 2,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "冷链物流",
+        "upCount": 2,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 2,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "碳中和",
+        "upCount": 2,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 2,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up"
+      },
+      {
+        "name": "有色金属",
+        "upCount": 1,
+        "downCount": 1,
+        "maxUpStreak": 1,
+        "brokenCount": 1,
+        "previousUpCount": 1,
+        "previousMaxStreak": 1,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "分歧",
+        "tone": "warn"
+      },
+      {
+        "name": "算力与通信",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 2,
+        "brokenCount": 5,
+        "previousUpCount": 6,
+        "previousMaxStreak": 2,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "降温",
+        "tone": "warn"
+      },
+      {
+        "name": "金融科技与券商",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 3,
+        "previousUpCount": 3,
+        "previousMaxStreak": 1,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "降温",
+        "tone": "warn"
+      },
+      {
+        "name": "统一大市场",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 5,
+        "brokenCount": 2,
+        "previousUpCount": 3,
+        "previousMaxStreak": 4,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "降温",
+        "tone": "warn"
+      },
+      {
+        "name": "传统能源",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 2,
+        "brokenCount": 0,
+        "previousUpCount": 1,
+        "previousMaxStreak": 1,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "节能环保",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 1,
+        "previousUpCount": 1,
+        "previousMaxStreak": 1,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "半导体",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "成渝特区",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "东北振兴",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "港口",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "航运",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "影视",
+        "upCount": 1,
+        "downCount": 0,
+        "maxUpStreak": 1,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "previousMaxStreak": 0,
+        "net": 1,
+        "negativeFeedback": false,
+        "status": "异动",
+        "tone": "warn"
+      },
+      {
+        "name": "医药",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 3,
+        "previousUpCount": 3,
+        "previousMaxStreak": 2,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "智能物流",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 3,
+        "previousUpCount": 3,
+        "previousMaxStreak": 1,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "数据要素",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "previousMaxStreak": 1,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "文化传媒",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "previousMaxStreak": 1,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "消费电子",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "previousMaxStreak": 2,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "玻璃",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 1,
+        "previousUpCount": 1,
+        "previousMaxStreak": 1,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "短剧游戏",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 1,
+        "previousUpCount": 1,
+        "previousMaxStreak": 2,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      },
+      {
+        "name": "工业互联网",
+        "upCount": 0,
+        "downCount": 0,
+        "maxUpStreak": 0,
+        "brokenCount": 1,
+        "previousUpCount": 1,
+        "previousMaxStreak": 2,
+        "net": 0,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down"
+      }
+    ],
+    "highlights": [
+      {
+        "tone": "up",
+        "title": "主线 · 汽车智能化",
+        "detail": "7 家涨停（最高 4 板），无跌停"
+      },
+      {
+        "tone": "down",
+        "title": "负反馈 · 消费",
+        "detail": "昨日 5 家涨停（最高 2 板） → 今日 1 家涨停、1 家跌停、5 家断板/未晋级"
+      },
+      {
+        "tone": "down",
+        "title": "退潮 · 医药",
+        "detail": "昨日 3 家涨停，今日 0 家涨停、3 家断板/未晋级"
+      },
+      {
+        "tone": "warn",
+        "title": "高度断层",
+        "detail": "最高 5 板（1 家），但 3 板断档，中位部队脱节、空间板孤立"
+      }
+    ],
+    "ladder": [
+      {
+        "streak": 5,
+        "label": "5连板",
+        "count": 1,
+        "stocks": [
+          "600838.SH"
+        ]
+      },
+      {
+        "streak": 4,
+        "label": "4连板",
+        "count": 3,
+        "stocks": [
+          "603528.SH",
+          "603028.SH",
+          "000678.SZ"
+        ]
+      },
+      {
+        "streak": 2,
+        "label": "2连板",
+        "count": 6,
+        "stocks": [
+          "001219.SZ",
+          "600558.SH",
+          "002708.SZ",
+          "002093.SZ",
+          "002086.SZ",
+          "001331.SZ"
+        ]
+      },
+      {
+        "streak": 1,
+        "label": "首板",
+        "count": 24,
+        "stocks": [
+          "000058.SZ",
+          "002011.SZ",
+          "002284.SZ",
+          "603565.SH",
+          "001311.SZ",
+          "601566.SH",
+          "002703.SZ",
+          "600303.SH",
+          "603758.SH",
+          "603121.SH",
+          "601956.SH",
+          "002639.SZ",
+          "001400.SZ",
+          "003026.SZ",
+          "002590.SZ",
+          "600828.SH",
+          "600715.SH",
+          "002187.SZ",
+          "603376.SH",
+          "603390.SH",
+          "002249.SZ",
+          "301479.SZ",
+          "300539.SZ",
+          "002434.SZ"
+        ]
+      }
+    ],
+    "stocks": [
+      {
+        "code": "600838.SH",
+        "name": "上海九百",
+        "sealTime": "09:30:20",
+        "bucket": "09:30-10:00",
+        "streak": 5,
+        "concepts": [
+          "统一大市场"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "newsVerified": true,
+        "conceptSource": "wind",
+        "streakLabel": "5连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "统一大市场"
+      },
+      {
+        "code": "603528.SH",
+        "name": "多伦科技",
+        "sealTime": "09:25:01",
+        "bucket": "09:30前(竞价)",
+        "streak": 4,
+        "concepts": [
+          "智能驾驶",
+          "卫星导航"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "newsVerified": true,
+        "conceptSource": "wind",
+        "streakLabel": "4连板",
+        "isAuctionSeal": true,
+        "primaryConcept": "智能驾驶"
+      },
+      {
+        "code": "603028.SH",
+        "name": "赛福天",
+        "sealTime": "09:25:02",
+        "bucket": "09:30前(竞价)",
+        "streak": 4,
+        "concepts": [
+          "光伏"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "newsVerified": true,
+        "conceptSource": "wind",
+        "streakLabel": "4连板",
+        "isAuctionSeal": true,
+        "primaryConcept": "光伏"
+      },
+      {
+        "code": "000678.SZ",
+        "name": "襄阳轴承",
+        "sealTime": "09:31:36",
+        "bucket": "09:30-10:00",
+        "streak": 4,
+        "concepts": [
+          "人形机器人"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "newsVerified": true,
+        "conceptSource": "wind",
+        "streakLabel": "4连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "人形机器人"
+      },
+      {
+        "code": "001219.SZ",
+        "name": "青岛食品",
+        "sealTime": "09:25:00",
+        "bucket": "09:30前(竞价)",
+        "streak": 2,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": true,
+        "primaryConcept": null
+      },
+      {
+        "code": "600558.SH",
+        "name": "大西洋",
+        "sealTime": "09:25:00",
+        "bucket": "09:30前(竞价)",
+        "streak": 2,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": true,
+        "primaryConcept": null
+      },
+      {
+        "code": "002708.SZ",
+        "name": "光洋股份",
+        "sealTime": "09:30:00",
+        "bucket": "09:30-10:00",
+        "streak": 2,
+        "concepts": [
+          "低空经济",
+          "华为汽车",
+          "汽车配件"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "汽车配件"
+      },
+      {
+        "code": "002093.SZ",
+        "name": "国脉科技",
+        "sealTime": "09:30:48",
+        "bucket": "09:30-10:00",
+        "streak": 2,
+        "concepts": [
+          "6G",
+          "车联网",
+          "5G",
+          "云计算"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "车联网"
+      },
+      {
+        "code": "002086.SZ",
+        "name": "东方海洋",
+        "sealTime": "09:31:06",
+        "bucket": "09:30-10:00",
+        "streak": 2,
+        "concepts": [
+          "首发经济"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "首发经济"
+      },
+      {
+        "code": "001331.SZ",
+        "name": "胜通能源",
+        "sealTime": "09:38:45",
+        "bucket": "09:30-10:00",
+        "streak": 2,
+        "concepts": [
+          "机器人",
+          "天然气"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "2连板",
+        "isAuctionSeal": false,
+        "primaryConcept": "机器人"
+      },
+      {
+        "code": "000058.SZ",
+        "name": "深赛格",
+        "sealTime": "09:25:00",
+        "bucket": "09:30前(竞价)",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": true,
+        "primaryConcept": null
+      },
+      {
+        "code": "002011.SZ",
+        "name": "盾安环境",
+        "sealTime": "09:30:03",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "冷链物流",
+          "核电",
+          "节能环保",
+          "机器人"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "核电"
+      },
+      {
+        "code": "002284.SZ",
+        "name": "亚太股份",
+        "sealTime": "09:30:06",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "汽车配件",
+          "车联网",
+          "智能驾驶"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "智能驾驶"
+      },
+      {
+        "code": "603565.SH",
+        "name": "中谷物流",
+        "sealTime": "09:31:12",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "航运",
+          "港口",
+          "券商重仓"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "航运"
+      },
+      {
+        "code": "001311.SZ",
+        "name": "多利科技",
+        "sealTime": "09:31:18",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "601566.SH",
+        "name": "九牧王",
+        "sealTime": "09:31:27",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "002703.SZ",
+        "name": "浙江世宝",
+        "sealTime": "09:32:39",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "智能驾驶"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "智能驾驶"
+      },
+      {
+        "code": "600303.SH",
+        "name": "曙光股份",
+        "sealTime": "09:32:42",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "603758.SH",
+        "name": "秦安股份",
+        "sealTime": "09:33:15",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "603121.SH",
+        "name": "华培动力",
+        "sealTime": "09:33:49",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "601956.SH",
+        "name": "东贝集团",
+        "sealTime": "09:33:58",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "002639.SZ",
+        "name": "雪人集团",
+        "sealTime": "09:35:15",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "碳中和",
+          "氢能",
+          "冷链物流",
+          "核电"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "氢能"
+      },
+      {
+        "code": "001400.SZ",
+        "name": "江顺科技",
+        "sealTime": "09:35:18",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "003026.SZ",
+        "name": "中晶科技",
+        "sealTime": "09:35:45",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "半导体硅片",
+          "半导体产业",
+          "半导体材料"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "半导体硅片"
+      },
+      {
+        "code": "002590.SZ",
+        "name": "万安科技",
+        "sealTime": "09:38:36",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "车联网",
+          "智能驾驶"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "智能驾驶"
+      },
+      {
+        "code": "600828.SH",
+        "name": "茂业商业",
+        "sealTime": "09:40:42",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "首发经济",
+          "成渝特区"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "首发经济"
+      },
+      {
+        "code": "600715.SH",
+        "name": "文投控股",
+        "sealTime": "09:41:22",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "seedance视频大模型",
+          "影视",
+          "东北振兴"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "影视"
+      },
+      {
+        "code": "002187.SZ",
+        "name": "广百股份",
+        "sealTime": "09:43:30",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "首发经济",
+          "新零售"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "首发经济"
+      },
+      {
+        "code": "603376.SH",
+        "name": "大明电子",
+        "sealTime": "09:48:01",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "603390.SH",
+        "name": "通达电气",
+        "sealTime": "09:54:44",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "智能驾驶"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "智能驾驶"
+      },
+      {
+        "code": "002249.SZ",
+        "name": "大洋电机",
+        "sealTime": "09:56:57",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [
+          "碳中和",
+          "氢能",
+          "稀土永磁",
+          "充电桩"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "氢能"
+      },
+      {
+        "code": "301479.SZ",
+        "name": "弘景光电",
+        "sealTime": "09:57:06",
+        "bucket": "09:30-10:00",
+        "streak": 1,
+        "concepts": [],
+        "boardType": "创业板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": null
+      },
+      {
+        "code": "300539.SZ",
+        "name": "横河精密",
+        "sealTime": "10:04:51",
+        "bucket": "10:00-10:30",
+        "streak": 1,
+        "concepts": [
+          "人工智能+",
+          "减速器"
+        ],
+        "boardType": "创业板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "减速器"
+      },
+      {
+        "code": "002434.SZ",
+        "name": "万里扬",
+        "sealTime": "10:05:33",
+        "bucket": "10:00-10:30",
+        "streak": 1,
+        "concepts": [
+          "储能"
+        ],
+        "boardType": "主板",
+        "isST": false,
+        "streakLabel": "首板",
+        "isAuctionSeal": false,
+        "primaryConcept": "储能"
+      }
+    ],
+    "sealTimeBuckets": [
+      {
+        "label": "09:30前(竞价)",
+        "count": 5,
+        "stocks": [
+          "603528.SH",
+          "603028.SH",
+          "001219.SZ",
+          "600558.SH",
+          "000058.SZ"
+        ]
+      },
+      {
+        "label": "09:30-10:00",
+        "count": 27,
+        "stocks": [
+          "600838.SH",
+          "000678.SZ",
+          "002708.SZ",
+          "002093.SZ",
+          "002086.SZ",
+          "001331.SZ",
+          "002011.SZ",
+          "002284.SZ",
+          "603565.SH",
+          "001311.SZ",
+          "601566.SH",
+          "002703.SZ",
+          "600303.SH",
+          "603758.SH",
+          "603121.SH",
+          "601956.SH",
+          "002639.SZ",
+          "001400.SZ",
+          "003026.SZ",
+          "002590.SZ",
+          "600828.SH",
+          "600715.SH",
+          "002187.SZ",
+          "603376.SH",
+          "603390.SH",
+          "002249.SZ",
+          "301479.SZ"
+        ]
+      },
+      {
+        "label": "10:00-10:30",
+        "count": 2,
+        "stocks": [
+          "300539.SZ",
+          "002434.SZ"
+        ]
+      }
+    ],
+    "concepts": [
+      {
+        "name": "汽车智能化",
+        "aliases": [
+          "智能驾驶",
+          "华为汽车",
+          "汽车配件",
+          "车联网"
+        ],
+        "stocks": [
+          "603528.SH",
+          "002708.SZ",
+          "002093.SZ",
+          "002284.SZ",
+          "002703.SZ",
+          "002590.SZ",
+          "603390.SH"
+        ],
+        "maxStreak": 4,
+        "firstSealTime": "09:25:01",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 4,
+          "2": 2,
+          "4": 1
+        },
+        "leaderCode": "603528.SH",
+        "leaderSealTime": "09:25:01",
+        "limitCount": 7,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 3,
+        "previousUpCount": 6,
+        "negativeFeedback": false,
+        "status": "主升",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "机器人",
+        "aliases": [
+          "人形机器人",
+          "机器人",
+          "减速器"
+        ],
+        "stocks": [
+          "000678.SZ",
+          "001331.SZ",
+          "002011.SZ",
+          "300539.SZ"
+        ],
+        "maxStreak": 4,
+        "firstSealTime": "09:30:03",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2,
+          "2": 1,
+          "4": 1
+        },
+        "leaderCode": "000678.SZ",
+        "leaderSealTime": "09:31:36",
+        "limitCount": 4,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 6,
+        "previousUpCount": 8,
+        "negativeFeedback": false,
+        "status": "降温",
+        "tone": "warn",
+        "downOnly": false
+      },
+      {
+        "name": "新能源",
+        "aliases": [
+          "光伏",
+          "氢能",
+          "充电桩",
+          "储能"
+        ],
+        "stocks": [
+          "603028.SH",
+          "002639.SZ",
+          "002249.SZ",
+          "002434.SZ"
+        ],
+        "maxStreak": 4,
+        "firstSealTime": "09:25:02",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 3,
+          "4": 1
+        },
+        "leaderCode": "603028.SH",
+        "leaderSealTime": "09:25:02",
+        "limitCount": 4,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 2,
+        "previousUpCount": 3,
+        "negativeFeedback": false,
+        "status": "主升",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "AI应用与软件",
+        "aliases": [
+          "云计算",
+          "seedance视频大模型",
+          "人工智能+"
+        ],
+        "stocks": [
+          "002093.SZ",
+          "600715.SH",
+          "300539.SZ"
+        ],
+        "maxStreak": 2,
+        "firstSealTime": "09:30:48",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2,
+          "2": 1
+        },
+        "leaderCode": "002093.SZ",
+        "leaderSealTime": "09:30:48",
+        "limitCount": 3,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 3,
+        "previousUpCount": 4,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "首发经济",
+        "aliases": [
+          "首发经济"
+        ],
+        "stocks": [
+          "002086.SZ",
+          "600828.SH",
+          "002187.SZ"
+        ],
+        "maxStreak": 2,
+        "firstSealTime": "09:31:06",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2,
+          "2": 1
+        },
+        "leaderCode": "002086.SZ",
+        "leaderSealTime": "09:31:06",
+        "limitCount": 3,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 3,
+        "previousUpCount": 4,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "航空航天与军工",
+        "aliases": [
+          "卫星导航",
+          "低空经济"
+        ],
+        "stocks": [
+          "603528.SH",
+          "002708.SZ"
+        ],
+        "maxStreak": 4,
+        "firstSealTime": "09:25:01",
+        "whitelist": true,
+        "streakDistribution": {
+          "2": 1,
+          "4": 1
+        },
+        "leaderCode": "603528.SH",
+        "leaderSealTime": "09:25:01",
+        "limitCount": 2,
+        "hasLeader": true,
+        "downCount": 0,
+        "brokenCount": 0,
+        "previousUpCount": 2,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "冷链物流",
+        "aliases": [
+          "冷链物流"
+        ],
+        "stocks": [
+          "002011.SZ",
+          "002639.SZ"
+        ],
+        "maxStreak": 1,
+        "firstSealTime": "09:30:03",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2
+        },
+        "leaderCode": "002011.SZ",
+        "leaderSealTime": "09:30:03",
+        "limitCount": 2,
+        "hasLeader": false,
+        "downCount": 0,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "电力与电网",
+        "aliases": [
+          "核电"
+        ],
+        "stocks": [
+          "002011.SZ",
+          "002639.SZ"
+        ],
+        "maxStreak": 1,
+        "firstSealTime": "09:30:03",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2
+        },
+        "leaderCode": "002011.SZ",
+        "leaderSealTime": "09:30:03",
+        "limitCount": 2,
+        "hasLeader": false,
+        "downCount": 0,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "碳中和",
+        "aliases": [
+          "碳中和"
+        ],
+        "stocks": [
+          "002639.SZ",
+          "002249.SZ"
+        ],
+        "maxStreak": 1,
+        "firstSealTime": "09:35:15",
+        "whitelist": true,
+        "streakDistribution": {
+          "1": 2
+        },
+        "leaderCode": "002639.SZ",
+        "leaderSealTime": "09:35:15",
+        "limitCount": 2,
+        "hasLeader": false,
+        "downCount": 0,
+        "brokenCount": 0,
+        "previousUpCount": 0,
+        "negativeFeedback": false,
+        "status": "走强",
+        "tone": "up",
+        "downOnly": false
+      },
+      {
+        "name": "医药",
+        "aliases": [],
+        "stocks": [],
+        "maxStreak": 0,
+        "firstSealTime": null,
+        "whitelist": false,
+        "streakDistribution": {},
+        "leaderCode": null,
+        "leaderSealTime": null,
+        "hasLeader": false,
+        "limitCount": 0,
+        "downCount": 0,
+        "brokenCount": 3,
+        "previousUpCount": 3,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down",
+        "downOnly": true
+      },
+      {
+        "name": "智能物流",
+        "aliases": [],
+        "stocks": [],
+        "maxStreak": 0,
+        "firstSealTime": null,
+        "whitelist": false,
+        "streakDistribution": {},
+        "leaderCode": null,
+        "leaderSealTime": null,
+        "hasLeader": false,
+        "limitCount": 0,
+        "downCount": 0,
+        "brokenCount": 3,
+        "previousUpCount": 3,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down",
+        "downOnly": true
+      },
+      {
+        "name": "数据要素",
+        "aliases": [],
+        "stocks": [],
+        "maxStreak": 0,
+        "firstSealTime": null,
+        "whitelist": false,
+        "streakDistribution": {},
+        "leaderCode": null,
+        "leaderSealTime": null,
+        "hasLeader": false,
+        "limitCount": 0,
+        "downCount": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down",
+        "downOnly": true
+      },
+      {
+        "name": "文化传媒",
+        "aliases": [],
+        "stocks": [],
+        "maxStreak": 0,
+        "firstSealTime": null,
+        "whitelist": false,
+        "streakDistribution": {},
+        "leaderCode": null,
+        "leaderSealTime": null,
+        "hasLeader": false,
+        "limitCount": 0,
+        "downCount": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down",
+        "downOnly": true
+      },
+      {
+        "name": "消费电子",
+        "aliases": [],
+        "stocks": [],
+        "maxStreak": 0,
+        "firstSealTime": null,
+        "whitelist": false,
+        "streakDistribution": {},
+        "leaderCode": null,
+        "leaderSealTime": null,
+        "hasLeader": false,
+        "limitCount": 0,
+        "downCount": 0,
+        "brokenCount": 2,
+        "previousUpCount": 2,
+        "negativeFeedback": false,
+        "status": "退潮",
+        "tone": "down",
+        "downOnly": true
+      }
+    ],
+    "promotion": {
+      "baseTradingDate": "20261026",
+      "baseLimitUpCount": 59,
+      "tiers": [
+        {
+          "from": 1,
+          "to": 2,
+          "label": "1进2",
+          "baseCount": 44,
+          "promotedCount": 6,
+          "rate": 0.1364,
+          "promoted": [
+            "002086.SZ",
+            "001331.SZ",
+            "002708.SZ",
+            "600558.SH",
+            "002093.SZ",
+            "001219.SZ"
+          ]
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "label": "2进3",
+          "baseCount": 8,
+          "promotedCount": 0,
+          "rate": 0,
+          "promoted": []
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "label": "3进4",
+          "baseCount": 6,
+          "promotedCount": 3,
+          "rate": 0.5,
+          "promoted": [
+            "000678.SZ",
+            "603528.SH",
+            "603028.SH"
+          ]
+        },
+        {
+          "from": 4,
+          "to": 5,
+          "label": "4进5",
+          "baseCount": 1,
+          "promotedCount": 1,
+          "rate": 1,
+          "promoted": [
+            "600838.SH"
+          ]
+        }
+      ],
+      "promoted": [
+        {
+          "code": "002086.SZ",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "001331.SZ",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "002708.SZ",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "600558.SH",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "002093.SZ",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "001219.SZ",
+          "fromStreak": 1,
+          "toStreak": 2
+        },
+        {
+          "code": "000678.SZ",
+          "fromStreak": 3,
+          "toStreak": 4
+        },
+        {
+          "code": "603528.SH",
+          "fromStreak": 3,
+          "toStreak": 4
+        },
+        {
+          "code": "603028.SH",
+          "fromStreak": 3,
+          "toStreak": 4
+        },
+        {
+          "code": "600838.SH",
+          "fromStreak": 4,
+          "toStreak": 5
+        }
+      ],
+      "failed": [
+        {
+          "code": "603200.SH",
+          "fromStreak": 1,
+          "name": "上海洗霸"
+        },
+        {
+          "code": "603719.SH",
+          "fromStreak": 1,
+          "name": "良品铺子"
+        },
+        {
+          "code": "603657.SH",
+          "fromStreak": 1,
+          "name": "春光科技"
+        },
+        {
+          "code": "600826.SH",
+          "fromStreak": 1,
+          "name": "兰生股份"
+        },
+        {
+          "code": "001318.SZ",
+          "fromStreak": 1,
+          "name": "阳光乳业"
+        },
+        {
+          "code": "688648.SH",
+          "fromStreak": 1,
+          "name": "中邮科技"
+        },
+        {
+          "code": "603716.SH",
+          "fromStreak": 1,
+          "name": "塞力医疗"
+        },
+        {
+          "code": "002095.SZ",
+          "fromStreak": 1,
+          "name": "生意宝"
+        },
+        {
+          "code": "002696.SZ",
+          "fromStreak": 1,
+          "name": "百洋股份"
+        },
+        {
+          "code": "603955.SH",
+          "fromStreak": 1,
+          "name": "大千生态"
+        },
+        {
+          "code": "002578.SZ",
+          "fromStreak": 1,
+          "name": "闽发铝业"
+        },
+        {
+          "code": "600476.SH",
+          "fromStreak": 1,
+          "name": "*ST湘邮"
+        },
+        {
+          "code": "000639.SZ",
+          "fromStreak": 1,
+          "name": "ST西王"
+        },
+        {
+          "code": "600980.SH",
+          "fromStreak": 1,
+          "name": "北矿科技"
+        },
+        {
+          "code": "002178.SZ",
+          "fromStreak": 1,
+          "name": "延华智能"
+        },
+        {
+          "code": "000995.SZ",
+          "fromStreak": 1,
+          "name": "皇台酒业"
+        },
+        {
+          "code": "603021.SH",
+          "fromStreak": 1,
+          "name": "*ST华鹏"
+        },
+        {
+          "code": "688386.SH",
+          "fromStreak": 1,
+          "name": "泛亚微透"
+        },
+        {
+          "code": "001317.SZ",
+          "fromStreak": 1,
+          "name": "三羊马"
+        },
+        {
+          "code": "600180.SH",
+          "fromStreak": 1,
+          "name": "*ST瑞茂"
+        },
+        {
+          "code": "603331.SH",
+          "fromStreak": 1,
+          "name": "百达精工"
+        },
+        {
+          "code": "002820.SZ",
+          "fromStreak": 1,
+          "name": "桂发祥"
+        },
+        {
+          "code": "300916.SZ",
+          "fromStreak": 1,
+          "name": "朗特智能"
+        },
+        {
+          "code": "688585.SH",
+          "fromStreak": 1,
+          "name": "上纬新材"
+        },
+        {
+          "code": "601900.SH",
+          "fromStreak": 1,
+          "name": "南方传媒"
+        },
+        {
+          "code": "603138.SH",
+          "fromStreak": 1,
+          "name": "海量数据"
+        },
+        {
+          "code": "000635.SZ",
+          "fromStreak": 1,
+          "name": "英力特"
+        },
+        {
+          "code": "603683.SH",
+          "fromStreak": 1,
+          "name": "晶华新材"
+        },
+        {
+          "code": "600822.SH",
+          "fromStreak": 1,
+          "name": "上海物贸"
+        },
+        {
+          "code": "300949.SZ",
+          "fromStreak": 1,
+          "name": "奥雅股份"
+        },
+        {
+          "code": "603258.SH",
+          "fromStreak": 1,
+          "name": "电魂网络"
+        },
+        {
+          "code": "001225.SZ",
+          "fromStreak": 1,
+          "name": "和泰机电"
+        },
+        {
+          "code": "002869.SZ",
+          "fromStreak": 1,
+          "name": "金溢科技"
+        },
+        {
+          "code": "605333.SH",
+          "fromStreak": 1,
+          "name": "沪光股份"
+        },
+        {
+          "code": "002795.SZ",
+          "fromStreak": 1,
+          "name": "永和智控"
+        },
+        {
+          "code": "300976.SZ",
+          "fromStreak": 1,
+          "name": "达瑞电子"
+        },
+        {
+          "code": "301314.SZ",
+          "fromStreak": 1,
+          "name": "科瑞思"
+        },
+        {
+          "code": "000411.SZ",
+          "fromStreak": 1,
+          "name": "英特集团"
+        },
+        {
+          "code": "000559.SZ",
+          "fromStreak": 2,
+          "name": "万向钱潮"
+        },
+        {
+          "code": "000700.SZ",
+          "fromStreak": 2,
+          "name": "模塑科技"
+        },
+        {
+          "code": "600094.SH",
+          "fromStreak": 2,
+          "name": "大名城"
+        },
+        {
+          "code": "603337.SH",
+          "fromStreak": 2,
+          "name": "杰克科技"
+        },
+        {
+          "code": "603901.SH",
+          "fromStreak": 2,
+          "name": "永创智能"
+        },
+        {
+          "code": "002931.SZ",
+          "fromStreak": 2,
+          "name": "锋龙股份"
+        },
+        {
+          "code": "000810.SZ",
+          "fromStreak": 2,
+          "name": "创维数字"
+        },
+        {
+          "code": "605488.SH",
+          "fromStreak": 2,
+          "name": "福莱新材"
+        },
+        {
+          "code": "301502.SZ",
+          "fromStreak": 3,
+          "name": "华阳智能"
+        },
+        {
+          "code": "002535.SZ",
+          "fromStreak": 3,
+          "name": "林州重机"
+        },
+        {
+          "code": "603089.SH",
+          "fromStreak": 3,
+          "name": "正裕工业"
+        }
+      ],
+      "overallRate": 0.1695,
+      "themeBreakdown": [
+        {
+          "name": "汽车智能化",
+          "limitCount": 3,
+          "maxStreak": 4,
+          "whitelist": true
+        },
+        {
+          "name": "航空航天与军工",
+          "limitCount": 2,
+          "maxStreak": 4,
+          "whitelist": true
+        },
+        {
+          "name": "机器人",
+          "limitCount": 2,
+          "maxStreak": 4,
+          "whitelist": true
+        },
+        {
+          "name": "新能源",
+          "limitCount": 1,
+          "maxStreak": 4,
+          "whitelist": true
+        },
+        {
+          "name": "统一大市场",
+          "limitCount": 1,
+          "maxStreak": 5,
+          "whitelist": true
+        },
+        {
+          "name": "算力与通信",
+          "limitCount": 1,
+          "maxStreak": 2,
+          "whitelist": true
+        },
+        {
+          "name": "AI应用与软件",
+          "limitCount": 1,
+          "maxStreak": 2,
+          "whitelist": true
+        },
+        {
+          "name": "首发经济",
+          "limitCount": 1,
+          "maxStreak": 2,
+          "whitelist": true
+        }
+      ]
+    },
+    "previous": {
+      "tradingDate": "20261026",
+      "limitUpCount": 59,
+      "limitDownCount": 28,
+      "maxStreak": 4,
+      "firstSealCount": null,
+      "concepts": [
+        {
+          "name": "机器人",
+          "limitCount": 8,
+          "maxStreak": 3
+        },
+        {
+          "name": "汽车智能化",
+          "limitCount": 6,
+          "maxStreak": 3
+        },
+        {
+          "name": "算力与通信",
+          "limitCount": 6,
+          "maxStreak": 2
+        },
+        {
+          "name": "消费",
+          "limitCount": 5,
+          "maxStreak": 2
+        },
+        {
+          "name": "AI应用与软件",
+          "limitCount": 4,
+          "maxStreak": 2
+        },
+        {
+          "name": "首发经济",
+          "limitCount": 4,
+          "maxStreak": 1
+        },
+        {
+          "name": "统一大市场",
+          "limitCount": 3,
+          "maxStreak": 4
+        },
+        {
+          "name": "新能源",
+          "limitCount": 3,
+          "maxStreak": 3
+        },
+        {
+          "name": "医药",
+          "limitCount": 3,
+          "maxStreak": 2
+        },
+        {
+          "name": "智能物流",
+          "limitCount": 3,
+          "maxStreak": 1
+        },
+        {
+          "name": "金融科技与券商",
+          "limitCount": 3,
+          "maxStreak": 1
+        },
+        {
+          "name": "航空航天与军工",
+          "limitCount": 2,
+          "maxStreak": 3
+        },
+        {
+          "name": "消费电子",
+          "limitCount": 2,
+          "maxStreak": 2
+        },
+        {
+          "name": "数据要素",
+          "limitCount": 2,
+          "maxStreak": 1
+        },
+        {
+          "name": "文化传媒",
+          "limitCount": 2,
+          "maxStreak": 1
+        },
+        {
+          "name": "工业互联网",
+          "limitCount": 1,
+          "maxStreak": 2
+        },
+        {
+          "name": "短剧游戏",
+          "limitCount": 1,
+          "maxStreak": 2
+        },
+        {
+          "name": "节能环保",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "传统能源",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "农业",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "有色金属",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "玻璃",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "物流骨干网",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "国企改革",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "上海自贸区",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "新型城镇化",
+          "limitCount": 1,
+          "maxStreak": 1
+        },
+        {
+          "name": "网络游戏",
+          "limitCount": 1,
+          "maxStreak": 1
+        }
+      ],
+      "partial": true,
+      "verified": true
+    },
+    "brokenStreaks": null,
+    "dataQuality": {
+      "cappedSectors": [],
+      "truncated": false,
+      "historyComplete": true,
+      "limitDownComplete": true,
+      "errors": [
+        "资讯复核中断（Wind 接口/额度连续失败），仅复核 5 只"
+      ]
+    },
+    "errors": [
+      "资讯复核中断（Wind 接口/额度连续失败），仅复核 5 只"
+    ]
+  },
+  "updatedAt": "2026-10-27T06:45:45.936Z"
+}

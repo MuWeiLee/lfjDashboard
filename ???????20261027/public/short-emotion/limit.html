@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-CN" data-market="zt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>涨停事件 · 短线情绪</title>
+  <link rel="icon" href="/short-emotion/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/short-emotion/logo.svg">
+  <script>
+    // 与 /cn 共用外观设置：深浅色主题与红涨/绿涨配色（twsvp_* 键名）。
+    (function () {
+      var root = document.documentElement;
+      var get = function (key) { try { return localStorage.getItem(key); } catch (e) { return null; } };
+      var theme = get("twsvp_theme");
+      if (theme !== "light" && theme !== "dark") theme = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      root.dataset.theme = theme;
+      if (theme === "dark") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#151922");
+      if (get("twsvp_price_scheme") === "green_up") {
+        root.style.setProperty("--price-up", "#76BB40");
+        root.style.setProperty("--price-down", "#FF4015");
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/short-emotion/twsvp.css?v=8">
+  <style>
+    /* ── 涨停事件工作台专属 ── */
+    .lu-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .lu-metric { min-width: 0; padding: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .lu-metric > span { display: block; color: var(--muted); font-size: 12px; }
+    .lu-metric > strong {
+      display: block; margin: 6px 0 4px;
+      font-family: "Manrope", sans-serif; font-size: 20px; font-weight: 700; line-height: 1.2;
+    }
+    .lu-metric > small { display: block; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .lu-delta { font-size: 12px; font-weight: 600; }
+    .lu-delta.up { color: var(--price-up); }
+    .lu-delta.down { color: var(--price-down); }
+
+    /* 断板带：昨日最高板今日未晋级，退潮第一信号 */
+    .lu-broken {
+      margin-bottom: 12px; padding: 9px 11px;
+      border-left: 2px solid var(--price-down); background: var(--panel);
+    }
+    .lu-broken-head { font-size: 12px; font-weight: 600; line-height: 1.5; }
+    .lu-broken-head b { font-family: "Manrope", sans-serif; }
+    .lu-broken-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .lu-broken-item {
+      display: inline-flex; align-items: baseline; gap: 6px;
+      padding: 2px 7px; border: 1px solid var(--border); background: var(--surface);
+      font-size: 12px; line-height: 1.5;
+    }
+    .lu-broken-item b { font-weight: 600; }
+    .lu-broken-item em {
+      color: var(--muted); font-size: 11px; font-style: normal;
+      font-family: "Manrope", monospace; text-decoration: line-through;
+    }
+
+    /* 天梯：每档一行，条形长度=家数，天然形成金字塔轮廓 */
+    .lu-ladder { display: grid; gap: 2px; }
+    .lu-tier {
+      display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start;
+      padding: 9px 0; border-top: 1px solid var(--border);
+    }
+    .lu-tier:first-child { border-top: 0; }
+    .lu-tier-label { color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.4; text-align: right; }
+    .lu-tier-label b { display: block; color: var(--ink); font-family: "Manrope", sans-serif; font-size: 18px; line-height: 1.1; }
+    .lu-tier-body { min-width: 0; }
+    .lu-tier-meta { display: grid; grid-template-columns: 1fr 42px; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .lu-tier-bar { height: 5px; background: var(--panel); }
+    .lu-tier-bar i { display: block; height: 5px; background: var(--price-up); }
+    .lu-tier-count { font-family: "Manrope", sans-serif; font-size: 13px; font-weight: 700; text-align: right; }
+    .lu-tier-count small { color: var(--muted); font-family: "Noto Sans SC", sans-serif; font-size: 11px; font-weight: 400; margin-left: 1px; }
+    .lu-tier-stocks { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lu-stock {
+      display: inline-flex; align-items: baseline; gap: 6px;
+      padding: 3px 8px; border: 1px solid var(--border); background: var(--surface);
+      font-size: 12px; line-height: 1.5;
+    }
+    .lu-stock b { font-weight: 600; }
+    .lu-stock em { color: var(--muted); font-size: 11px; font-style: normal; font-family: "Manrope", sans-serif; }
+    /* 个股所属题材：用竖线分隔，避免和时间挤在一起 */
+    .lu-stock-tag {
+      color: var(--muted); font-size: 10px; font-style: normal;
+      padding-left: 6px; border-left: 1px solid var(--border);
+    }
+    .lu-stock.is-lead { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .lu-stock.is-lead b::after { content: " 龙头"; color: var(--price-up); font-size: 10px; font-weight: 600; }
+    .lu-stock.is-st b { color: var(--muted); }
+    .lu-more {
+      margin-top: 8px; padding: 4px 10px; border: 1px dashed var(--border);
+      background: none; color: var(--muted); font-family: inherit; font-size: 12px; cursor: pointer;
+    }
+    .lu-more:hover { color: var(--ink); border-color: var(--ink); }
+    .lu-tier-empty { padding: 2px 0; color: var(--muted); font-size: 12px; }
+
+    /* 概念：板高微条，一只股票一个方块，越深代表板越高 */
+    .lu-micro { display: flex; flex-wrap: wrap; gap: 2px; margin: 6px 0 4px; }
+    .lu-micro i { display: block; width: 9px; height: 9px; background: var(--price-up); }
+    .lu-micro i.is-flat { background: var(--muted); }
+
+    /* 核心读数用红涨色高亮 */
+    #m-limitup, #m-maxstreak { color: var(--price-up); }
+    /* 跌停家数与涨跌停差用绿跌色，和涨停形成对照 */
+    #m-limitdown { color: var(--price-down); }
+    #m-netlimit.up { color: var(--price-up); }
+    #m-netlimit.down { color: var(--price-down); }
+
+    /* 今日亮点：先看结论，再看明细 */
+    .lu-highlights { display: grid; gap: 8px; margin-top: 4px; }
+    .lu-highlight { padding: 9px 11px; border-left: 2px solid var(--border); background: var(--panel); }
+    .lu-highlight.up { border-left-color: var(--price-up); }
+    .lu-highlight.down { border-left-color: var(--price-down); }
+    .lu-highlight.warn { border-left-color: var(--warn); }
+    .lu-highlight b { display: block; font-size: 13px; font-weight: 600; line-height: 1.4; }
+    .lu-highlight.up b { color: var(--price-up); }
+    .lu-highlight.down b { color: var(--price-down); }
+    .lu-highlight.warn b { color: var(--warn); }
+    .lu-highlight span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    /* 题材强弱状态标签：并进概念聚合行内 */
+    .lu-status {
+      padding: 1px 6px; border: 1px solid var(--border);
+      font-size: 11px; font-weight: 500; white-space: nowrap;
+    }
+    .lu-status.up { color: var(--price-up); border-color: var(--price-up); }
+    .lu-status.down { color: var(--price-down); border-color: var(--price-down); }
+    .lu-status.warn { color: var(--warn); border-color: var(--warn); }
+    /* 跌停/断板计数：和涨停家数用颜色区分，避免看串行 */
+    .lu-concept-meta .is-down { color: var(--price-down); }
+    .lu-concept-meta .is-broken { color: var(--muted); }
+
+    /* 跌停股 */
+    .lu-down-concepts { margin-bottom: 8px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .lu-down-concepts b { color: var(--price-down); font-weight: 600; }
+    .lu-down-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lu-down-stock {
+      display: inline-flex; align-items: baseline; gap: 6px;
+      padding: 3px 8px; border: 1px solid var(--border); background: var(--surface);
+      font-size: 12px; line-height: 1.5;
+    }
+    .lu-down-stock b { color: var(--price-down); font-weight: 600; }
+    .lu-down-stock em {
+      color: var(--muted); font-size: 11px; font-style: normal; font-family: "Manrope", sans-serif;
+    }
+
+    /* 环比箭头：红涨绿跌口径，板高/家数上升用红、下降用绿 */
+    .lu-arrow { font-family: "Manrope", sans-serif; font-size: 15px; font-style: normal; margin-left: 4px; }
+    .lu-arrow.up { color: var(--price-up); }
+    .lu-arrow.down { color: var(--price-down); }
+    .lu-arrow.flat { color: var(--muted); }
+
+    /* 晋级率 */
+    .lu-promo-overall { display: flex; align-items: baseline; gap: 10px; margin: 4px 0 12px; }
+    .lu-promo-overall strong { font-family: "Manrope", sans-serif; font-size: 28px; font-weight: 700; }
+    .lu-promo-overall span { color: var(--muted); font-size: 12px; }
+    .lu-promo-list { display: grid; gap: 8px; }
+    .lu-promo-row { display: grid; grid-template-columns: 52px 1fr 96px; gap: 10px; align-items: center; }
+    .lu-promo-tier { font-size: 12px; font-weight: 600; text-align: right; }
+    .lu-promo-track { height: 10px; background: var(--panel); }
+    .lu-promo-track i { display: block; height: 10px; background: var(--price-up); }
+    .lu-promo-rate { font-family: "Manrope", sans-serif; font-size: 12px; font-weight: 600; text-align: right; }
+    .lu-promo-rate em { color: var(--muted); font-size: 11px; font-style: normal; font-weight: 400; }
+
+    /* 晋级个股的题材归类 */
+    .lu-promo-themes { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .lu-promo-themes-title { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .lu-promo-themes-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lu-promo-theme {
+      display: inline-flex; align-items: baseline; gap: 6px;
+      padding: 3px 8px; border: 1px solid var(--border); background: var(--surface);
+      font-size: 12px; line-height: 1.5;
+    }
+    .lu-promo-theme b { font-weight: 600; }
+    .lu-promo-theme .lu-star { color: var(--price-up); font-size: 10px; }
+    .lu-promo-theme em {
+      color: var(--muted); font-size: 11px; font-style: normal;
+      font-family: "Manrope", sans-serif;
+    }
+
+    /* 概念聚合 */
+    .lu-concept-list { display: grid; gap: 0; margin-top: 4px; }
+    .lu-concept {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start;
+      padding: 10px 0; border-top: 1px solid var(--border); cursor: pointer;
+      background: none; border-left: 0; border-right: 0; border-bottom: 0;
+      width: 100%; text-align: left; color: inherit;
+      font-family: inherit; font-size: inherit;
+    }
+    .lu-concept:first-child { border-top: 0; }
+    .lu-concept-name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .lu-concept-name b { font-size: 14px; font-weight: 600; }
+    .lu-concept-name .lu-star { color: var(--price-up); font-size: 11px; }
+    .lu-concept-meta { margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .lu-concept-count { font-family: "Manrope", sans-serif; font-size: 16px; font-weight: 700; text-align: right; }
+    .lu-concept-count small { display: block; color: var(--muted); font-family: "Noto Sans SC", sans-serif; font-size: 11px; font-weight: 400; }
+    .lu-concept-stocks { grid-column: 1 / -1; display: none; flex-wrap: wrap; gap: 6px; padding-top: 8px; }
+    .lu-concept.open .lu-concept-stocks { display: flex; }
+    .lu-concept.open { background: var(--panel); }
+    .lu-empty { padding: 22px 0; color: var(--muted); font-size: 13px; text-align: center; }
+    .lu-warn { margin-top: 10px; padding: 8px 10px; border: 1px solid var(--warn); color: var(--warn); font-size: 12px; line-height: 1.55; }
+    /* 导航：A股为主 tab，涨停通过子导航标注为当前分支 */
+    :root[data-market="zt"] .market-tab[data-market="cn"] { background: var(--ink); color: var(--surface); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="nav">
+      <a class="nav-logo" href="/cn" aria-label="短线情绪"><img src="/short-emotion/logo.svg" alt="短线情绪"></a>
+      <div class="nav-title">短线情绪</div>
+      <div class="market-switch" role="tablist" aria-label="市场">
+        <a class="market-tab" data-market="cn" href="/cn">A股</a>
+        <a class="market-tab" data-market="tw" href="/tw">台股</a>
+      </div>
+    </nav>
+    <header class="tabs-wrap">
+      <div class="tabs" role="tablist" aria-label="页面分区">
+        <a class="tab-btn" href="/cn#overview">情绪总览</a>
+        <a class="tab-btn" href="/cn#breadth">市场广度</a>
+        <a class="tab-btn active" href="/zt" aria-current="page">涨停情绪</a>
+        <a class="tab-btn" href="/cn#flow">资金流向</a>
+        <a class="tab-btn" href="/cn#themes">题材雷达</a>
+        <a class="tab-btn" href="/cn#timeline">情绪路径</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="status-bar">
+        <span id="connection-dot" class="status-dot"></span>
+        <div class="status-copy"><b id="connection">读取快照中</b><small id="quote-time">等待行情时间</small></div>
+        <button id="refresh" class="pill-btn" type="button">刷新</button>
+      </div>
+
+      <section class="section">
+        <div class="lu-summary">
+          <article class="lu-metric"><span>涨停家数</span><strong id="m-limitup">—</strong><small id="m-limitup-note">已剔除 ST</small></article>
+          <article class="lu-metric"><span>跌停家数</span><strong id="m-limitdown">—</strong><small id="m-limitdown-note">已剔除 ST</small></article>
+          <article class="lu-metric"><span>最高板</span><strong id="m-maxstreak">—</strong><small id="m-maxstreak-note">梯队深度 —</small></article>
+          <article class="lu-metric"><span>涨跌停差</span><strong id="m-netlimit">—</strong><small id="m-netlimit-note">情绪温度</small></article>
+          <article class="lu-metric"><span>早盘封板 ≤10:00</span><strong id="m-firstseal">—</strong><small id="m-firstseal-note">封板意愿强度</small></article>
+          <article class="lu-metric"><span>昨日涨停晋级率</span><strong id="m-promotion">—</strong><small id="m-promotion-note">基准 —</small></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">今日亮点</h2><span id="highlight-pill" class="pill">—</span></div>
+          <div id="highlights" class="lu-highlights"><div class="lu-empty">读取中…</div></div>
+        </article>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">涨停天梯</h2><span id="ladder-pill" class="pill">—</span></div>
+          <p class="card-desc">按连板高度分档，同档内按首次封板时间排列；首板默认折叠。</p>
+          <div id="broken"></div>
+          <div id="ladder" class="lu-ladder"><div class="lu-empty">读取中…</div></div>
+        </article>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">跌停股</h2><span id="limitdown-pill" class="pill">—</span></div>
+          <div id="limitdown" class="lu-down-wrap"><div class="lu-empty">读取中…</div></div>
+        </article>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">晋级率</h2><span id="promo-pill" class="pill">—</span></div>
+          <div id="promo-overall" class="lu-promo-overall"><strong>—</strong><span>等待数据</span></div>
+          <div id="promo-list" class="lu-promo-list"></div>
+          <p id="promo-note" class="card-desc">昨日各板高今日继续涨停的比例；高位板样本少，比率波动大。</p>
+          <div id="promo-themes" class="lu-promo-themes"></div>
+        </article>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">概念题材聚合</h2><span id="concept-pill" class="pill">—</span></div>
+          <p class="card-desc">按题材族合并涨停个股，仅展示 ≥2 家涨停的题材，并标注当日强弱状态与跌停、断板家数；⚠ 表示前期主线出现负反馈。</p>
+          <div id="concepts" class="lu-concept-list"><div class="lu-empty">读取中…</div></div>
+          <div id="quality"></div>
+        </article>
+      </section>
+
+      <footer class="legal">
+        <p>仅用于研究与情绪观察，不构成投资建议；涨停家数与封板时间取自 Wind 结构化事件表，请以“行情时间”判断新鲜度。</p>
+      </footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/short-emotion/limit.js?v=6"></script>
+</body>
+</html>

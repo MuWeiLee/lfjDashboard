@@ -20,6 +20,8 @@ export const SCHEDULES = {
     jobs: {
       emotion: { everyMinutes: 30, windows: [[9 * 60 + 30, 11 * 60 + 30], [13 * 60, 15 * 60]] },
       anomalies: { everyMinutes: 30, windows: [[9 * 60 + 30, 11 * 60 + 30], [13 * 60, 15 * 60]] },
+      // 资金流向：与行情同一 30 分钟节拍采样（今日分时 + 收盘后构建 5/20 日窗口）
+      fundFlow: { everyMinutes: 30, windows: [[9 * 60 + 30, 11 * 60 + 30], [13 * 60, 15 * 60]] },
       news: { everyMinutes: 30, windows: [[9 * 60, 15 * 60]] }
     },
     // 最后一次更新后清理：保留最近 60 个交易日的盘中快照

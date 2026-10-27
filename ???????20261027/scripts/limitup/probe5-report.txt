@@ -1,0 +1,31 @@
+第五轮探针 20261027（上一交易日 20261026）| Wind key 5 个
+
+──── A1 昨日涨停 → 今日涨跌幅（个股级，用于拆分首板/连板溢价） ────
+tool: stock_data.search_stocks
+question: 筛选20261026涨停的沪深A股并返回Wind代码、证券简称、20261027涨跌幅、20261027开盘涨幅
+  各次尝试行数: ["err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余","err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余"]
+  ✗ 全部为空
+
+──── A2 引擎现措辞：昨日涨停股票今日最新涨跌幅排名 ────
+tool: analytics_data.get_financial_data
+question: 20261026涨停股票在20261027的最新涨跌幅排名
+  各次尝试行数: ["err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余","err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余"]
+  ✗ 全部为空
+
+──── B1 昨日涨停股今日集合竞价涨幅（竞价溢价） ────
+tool: analytics_data.get_financial_data
+question: 20261026涨停的沪深A股在20261027的集合竞价涨幅
+  各次尝试行数: ["err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余","err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余"]
+  ✗ 全部为空
+
+──── B2 今日集合竞价涨幅排名（判断竞价强度分布） ────
+tool: stock_data.search_stocks
+question: 20261027沪深A股集合竞价涨幅排名
+  各次尝试行数: ["err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余","err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余"]
+  ✗ 全部为空
+
+──── B3 今日涨停股能否带开盘价/量比（竞价强度替代口径） ────
+tool: stock_data.search_stocks
+question: 筛选20261027涨停的沪深A股并返回Wind代码、证券简称、今日开盘价、昨日收盘价、量比
+  各次尝试行数: ["err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余","err:QUOTA_ERROR: 所有已配置 Wind API Key 的额度均已耗尽 | YYH: 原因：账户积分余额不足，无法完成当前操作。建议：先完成充值并确认余"]
+  ✗ 全部为空

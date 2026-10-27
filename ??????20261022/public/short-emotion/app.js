@@ -464,6 +464,306 @@ function renderTimeline() {
   $("#timeline-chart").innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><defs><linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1"><stop class="timeline-stop" offset="0" stop-opacity=".12"/><stop class="timeline-stop" offset="1" stop-opacity="0"/></linearGradient></defs>${grid}${axis}<polygon class="timeline-area" points="${area}"/><polyline class="timeline-line" points="${line}"/>${dots}</svg>`;
 }
 
+// ── 资金流向：今天（30 分钟累计采样）/ 5日 / 20日，金额与占比两种口径 ──
+let fundFlow = null;
+const flowView = { metric: "amount", period: "today" };
+let flowPinned = null; // 移动端点按选中的题材（重绘/切周期时清空）
+const FLOW_COLORS = ["#3E6A8F", "#C9862F", "#B5533F", "#2F7C74", "#8A5FA8", "#6AA84F", "#A85B7C", "#B8962E", "#5A6E99", "#7A8F3C", "#A0653F", "#44707A", "#8B4A4A", "#556B8C", "#6E5A8E", "#3D7A5C", "#4A93A9"];
+const FLOW_SESSIONS = [[570, 690], [780, 900]];
+
+function flowProgress(minute) {
+  let elapsed = 0;
+  for (const [start, end] of FLOW_SESSIONS) {
+    if (minute <= end) return elapsed + Math.max(0, minute - start);
+    elapsed += end - start;
+  }
+  return elapsed;
+}
+
+const FLOW_TOTAL_MINUTES = FLOW_SESSIONS.reduce((sum, [start, end]) => sum + end - start, 0);
+
+function flowDataset() {
+  if (!fundFlow) return null;
+  if (flowView.period === "today") {
+    const today = fundFlow.today;
+    if (!today?.series?.length || !today.samples?.length) return null;
+    return {
+      mode: "intraday",
+      samples: today.samples,
+      startLabel: today.startLabel,
+      lines: today.series.map((line) => ({
+        name: line.name,
+        points: line.points.map((point) => ({ key: point.minute, label: point.label, amount: point.amount, pct: point.pct }))
+      }))
+    };
+  }
+  const win = fundFlow.windows?.[flowView.period];
+  if (!win?.series?.length || !win.dates?.length) return null;
+  return {
+    mode: "daily",
+    dates: win.dates,
+    closed: win.closed,
+    builtAt: win.builtAt,
+    lines: win.series.map((line) => ({
+      name: line.name,
+      points: line.points.map((point) => ({ key: point.date, label: `${point.date.slice(4, 6)}-${point.date.slice(6, 8)}`, amount: point.amount, pct: point.pct }))
+    }))
+  };
+}
+
+function flowSelectedLines(dataset) {
+  const metric = flowView.metric;
+  const ranked = dataset.lines.map((line) => {
+    const last = [...line.points].reverse().find((point) => Number.isFinite(point[metric]));
+    return { ...line, last: last ? last[metric] : null };
+  }).filter((line) => line.last != null).sort((a, b) => b.last - a.last);
+  const positives = ranked.filter((line) => line.last > 0).slice(0, 8);
+  const negatives = ranked.filter((line) => line.last < 0).slice(-5).reverse();
+  const flat = ranked.filter((line) => line.last === 0).slice(0, 2);
+  const chosen = [...positives, ...negatives, ...flat];
+  return chosen.length ? chosen : ranked.slice(0, 8);
+}
+
+function flowSmoothPath(points) {
+  if (points.length < 3) return points.map((point, index) => `${index ? "L" : "M"}${point[0]},${point[1]}`).join("");
+  let path = `M${points[0][0]},${points[0][1]}`;
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const p0 = points[index - 1] || points[index];
+    const p1 = points[index];
+    const p2 = points[index + 1];
+    const p3 = points[index + 2] || p2;
+    path += ` C${p1[0] + (p2[0] - p0[0]) / 6},${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6},${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]},${p2[1]}`;
+  }
+  return path;
+}
+
+function flowTip() {
+  let tip = $("#flow-tip");
+  if (!tip) {
+    tip = document.createElement("div");
+    tip.id = "flow-tip";
+    tip.className = "flow-tip";
+    document.body.append(tip);
+  }
+  return tip;
+}
+
+// 日期标签：兼容 "2026-10-13" 与 "20261013" 两种写法，统一成 10-13。
+const dayLabel = (value) => {
+  const digits = String(value ?? "").replace(/\D/g, "");
+  return digits.length >= 8 ? `${digits.slice(4, 6)}-${digits.slice(6, 8)}` : String(value ?? "");
+};
+
+// 展示名统一去掉「指数」二字（Wind 概念指数全名），过长时再截断。
+const cleanFlowName = (value) => {
+  const text = String(value ?? "").replace(/指数/g, "").replace(/\s+/g, " ").trim();
+  return text || String(value ?? "");
+};
+
+function renderFundFlow() {
+  const chart = $("#flow-chart");
+  if (!chart) return;
+  flowPinned = null;
+  $("#flow-tip")?.classList.remove("show");
+  const unit = flowView.metric === "pct" ? "%" : "亿元";
+  setText("#flow-pill", `单位：${unit}`);
+  $$("[data-flow-opt]").forEach((option) => option.classList.toggle("active", option.dataset.flowOpt === flowView.metric));
+  $$("[data-flow-period]").forEach((option) => option.classList.toggle("active", option.dataset.flowPeriod === flowView.period));
+  const metricSwitch = $("#flow-metric-switch");
+  if (metricSwitch) {
+    const isPct = flowView.metric === "pct";
+    metricSwitch.setAttribute("aria-checked", String(isPct));
+    metricSwitch.dataset.index = isPct ? "1" : "0";
+  }
+  const periodSwitch = $("#flow-period-switch");
+  if (periodSwitch) periodSwitch.dataset.index = String({ today: 0, 5: 1, 20: 2 }[flowView.period] ?? 0);
+
+  const dataset = flowDataset();
+  if (!dataset) {
+    chart.innerHTML = `<div class="empty">暂无资金流向数据。</div>`;
+    return;
+  }
+  const lines = flowSelectedLines(dataset).map((line) => ({ ...line, name: cleanFlowName(line.name) }));
+  const metric = flowView.metric;
+  const values = lines.flatMap((line) => line.points.map((point) => point[metric])).filter(Number.isFinite);
+  if (!values.length) {
+    chart.innerHTML = `<div class="empty">${metric === "pct"
+      ? "该周期 Wind 未返回占比数据，可切换到「金额」查看。"
+      : "本轮未取到有效的资金流向数值。"}</div>`;
+    return;
+  }
+
+  const width = Math.max(300, Math.round(chart.clientWidth || 900));
+  const height = width < 560 ? 300 : 340;
+  const padL = 46;
+  const padR = width < 560 ? 104 : 154;
+  const padT = 18;
+  const padB = 34;
+  let vMax = Math.max(0, ...values);
+  let vMin = Math.min(0, ...values);
+  const span = Math.max(vMax - vMin, 1);
+  vMax += span * 0.12;
+  vMin -= span * 0.12;
+  const step = span > 60 ? 20 : span > 24 ? 10 : span > 10 ? 5 : span > 4 ? 2 : 1;
+  vMax = Math.ceil(vMax / step) * step;
+  vMin = Math.floor(vMin / step) * step;
+  const xOf = (key) => {
+    if (dataset.mode === "intraday") return padL + flowProgress(Number(key)) / FLOW_TOTAL_MINUTES * (width - padL - padR);
+    const index = dataset.dates.indexOf(key);
+    return padL + (dataset.dates.length > 1 ? index / (dataset.dates.length - 1) : 0.5) * (width - padL - padR);
+  };
+  const yOf = (value) => padT + (vMax - value) / Math.max(vMax - vMin, 0.001) * (height - padT - padB);
+
+  const grid = [];
+  for (let value = vMax; value >= vMin - 0.001; value -= step) {
+    const y = yOf(value);
+    const zero = Math.abs(value) < 1e-6;
+    grid.push(`<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="${zero ? "#c8cfda" : "#eef1f5"}" stroke-width="${zero ? 1.4 : 1}"${zero ? "" : ' stroke-dasharray="3 4"'}/>`);
+    grid.push(`<text x="${padL - 10}" y="${y + 4}" font-size="11" fill="#98a2b3" text-anchor="end">${zero ? "0" : `${value > 0 ? "+" : ""}${Number(value.toFixed(1))}`}</text>`);
+  }
+
+  const axis = [];
+  if (dataset.mode === "intraday") {
+    [[570, "09:30"], [630, "10:30"], [690, "11:30 / 13:00"], [780, ""], [810, "13:30"], [870, "14:30"], [900, "15:00"]]
+      .filter(([, label]) => label)
+      .forEach(([minute, label], index, list) => {
+        const x = xOf(minute);
+        axis.push(`<line x1="${x}" y1="${padT}" x2="${x}" y2="${height - padB}" stroke="#f1f4f8" stroke-width="1"/>`);
+        const anchor = index === 0 ? "start" : index === list.length - 1 ? "end" : "middle";
+        axis.push(`<text x="${x}" y="${height - 12}" font-size="11" fill="#98a2b3" text-anchor="${anchor}">${label}</text>`);
+      });
+  } else {
+    // 5 日逐日标注；更长周期取 5 个均匀时点，避免横轴挤满。
+    const total = dataset.dates.length;
+    const picks = total <= 6
+      ? dataset.dates.map((_, index) => index)
+      : [...new Set([0, Math.round((total - 1) * 0.25), Math.round((total - 1) * 0.5), Math.round((total - 1) * 0.75), total - 1])];
+    picks.forEach((index, slot) => {
+      const date = dataset.dates[index];
+      const x = xOf(date);
+      const anchor = slot === 0 ? "start" : slot === picks.length - 1 ? "end" : "middle";
+      axis.push(`<line x1="${x}" y1="${padT}" x2="${x}" y2="${height - padB}" stroke="#f1f4f8" stroke-width="1"/>`);
+      axis.push(`<text x="${x}" y="${height - 12}" font-size="11" fill="#98a2b3" text-anchor="${anchor}">${dayLabel(date)}</text>`);
+    });
+  }
+
+  const curves = lines.map((line, index) => {
+    const color = FLOW_COLORS[index % FLOW_COLORS.length];
+    const points = line.points.map((point) => [xOf(point.key), yOf(point[metric])]).filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y));
+    if (!points.length) return "";
+    const path = flowSmoothPath(points);
+    const area = `${path} L${points.at(-1)[0]},${yOf(0)} L${points[0][0]},${yOf(0)} Z`;
+    const gradient = `flowGradient${index}`;
+    const lastValue = line.points.filter((point) => Number.isFinite(point[metric])).at(-1)?.[metric];
+    const label = `${signOf(lastValue)}${Math.abs(Number(lastValue)).toFixed(1)}${metric === "pct" ? "%" : "亿"}`;
+    const markers = dataset.mode === "intraday"
+      ? points.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="${color}" opacity=".85"/>`).join("")
+      : "";
+    return `<defs><linearGradient id="${gradient}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".16"/><stop offset="100%" stop-color="${color}" stop-opacity=".02"/></linearGradient></defs><g class="flow-series" data-name="${escapeHtml(line.name)}" data-label="${escapeHtml(label)}"><path d="${area}" fill="url(#${gradient})" opacity=".85"/><path class="line" d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity=".9"/>${markers}<path class="hit" d="${path}" fill="none" stroke="transparent" stroke-width="22" stroke-linecap="round" pointer-events="stroke"/></g>`;
+  }).join("");
+
+  // 右端标签：排序后做两遍推挤（向下撑开、溢出再整体上移并反向撑开），保证任意密度下都不叠字。
+  const labels = lines.map((line, index) => {
+    const lastPoint = [...line.points].reverse().find((point) => Number.isFinite(point[metric]));
+    return { name: line.name, value: lastPoint?.[metric], color: FLOW_COLORS[index % FLOW_COLORS.length], x: width - padR + 12, y: lastPoint ? yOf(lastPoint[metric]) : null };
+  }).filter((label) => label.value != null && Number.isFinite(label.y)).sort((a, b) => a.y - b.y);
+  const fontSize = width < 560 ? 10 : 11;
+  const topBound = padT + 8;
+  const bottomBound = height - padB - 2;
+  const count = labels.length;
+  const labelStep = count > 1 ? Math.min(fontSize + 11, (bottomBound - topBound) / (count - 1)) : 0;
+  labels.forEach((label) => { label.y = Math.min(bottomBound, Math.max(topBound, label.y)); });
+  for (let index = 1; index < count; index += 1) {
+    if (labels[index].y - labels[index - 1].y < labelStep) labels[index].y = labels[index - 1].y + labelStep;
+  }
+  const overflow = count ? labels[count - 1].y - bottomBound : 0;
+  if (overflow > 0) {
+    labels.forEach((label) => { label.y -= overflow; });
+    for (let index = count - 2; index >= 0; index -= 1) {
+      if (labels[index + 1].y - labels[index].y < labelStep) labels[index].y = labels[index + 1].y - labelStep;
+    }
+  }
+  labels.forEach((label) => { label.y = Math.min(bottomBound, Math.max(topBound, label.y)); });
+  const labelNodes = labels.map((label) => {
+    const sign = label.value >= 0 ? "+" : "−";
+    const text = `${label.name.slice(0, width < 560 ? 6 : 9)} ${sign}${Math.abs(Number(label.value)).toFixed(1)}${metric === "pct" ? "%" : "亿"}`;
+    return `<g class="flow-label" data-name="${escapeHtml(label.name)}"><rect x="${width - padR}" y="${label.y - 8}" width="${padR - 6}" height="16" fill="transparent"/><circle cx="${width - padR}" cy="${label.y}" r="3" fill="${label.color}"/><line x1="${width - padR}" y1="${label.y}" x2="${width - padR + 6}" y2="${label.y}" stroke="${label.color}" stroke-width="1" opacity=".5"/><text x="${width - padR + 10}" y="${label.y + 4}" font-size="${fontSize}" fill="${label.color}" font-weight="${Math.abs(label.value) > 10 ? 700 : 400}">${escapeHtml(text)}</text></g>`;
+  }).join("");
+
+  chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">${grid.join("")}${axis.join("")}${curves}${labelNodes}</svg>`;
+}
+
+function signOf(value) {
+  return Number(value) >= 0 ? "+" : "−";
+}
+
+async function loadFundFlow() {
+  try {
+    fundFlow = await api("fund-flow");
+    renderFundFlow();
+  } catch (error) {
+    fundFlow = null;
+    const chart = $("#flow-chart");
+    if (chart) chart.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+  }
+}
+
+function bindFlowTools() {
+  const metricSwitch = $("#flow-metric-switch");
+  metricSwitch?.addEventListener("click", () => {
+    flowView.metric = flowView.metric === "pct" ? "amount" : "pct";
+    renderFundFlow();
+  });
+  $("#flow-period-switch")?.addEventListener("click", (event) => {
+    const option = event.target.closest("[data-flow-period]");
+    if (!option) return;
+    flowView.period = option.dataset.flowPeriod;
+    renderFundFlow();
+  });
+  const chart = $("#flow-chart");
+  const canHover = window.matchMedia?.("(hover: hover)")?.matches ?? true;
+  // 移动端没有 hover：点按曲线或右端标签选中该题材，再次点按或点空白处取消。
+  const paint = (name) => {
+    chart?.classList.toggle("dim", Boolean(name));
+    $$(".flow-label", chart).forEach((node) => node.classList.toggle("hover", Boolean(name) && node.dataset.name === name));
+    $$(".flow-series", chart).forEach((node) => node.classList.toggle("active", Boolean(name) && node.dataset.name === name));
+  };
+  const seriesOf = (name) => $$(".flow-series", chart).find((node) => node.dataset.name === name);
+  chart?.addEventListener("click", (event) => {
+    const target = event.target.closest(".flow-label") || event.target.closest(".flow-series");
+    const name = target?.dataset.name || null;
+    flowPinned = flowPinned === name ? null : name;
+    paint(flowPinned);
+    const tip = flowTip();
+    if (!flowPinned) { tip.classList.remove("show"); return; }
+    const series = seriesOf(flowPinned);
+    tip.textContent = `${flowPinned} ${series?.dataset.label || ""}`.trim();
+    tip.style.left = `${event.clientX + 14}px`;
+    tip.style.top = `${event.clientY - 34}px`;
+    tip.classList.add("show");
+  });
+  if (canHover) {
+    chart?.addEventListener("mousemove", (event) => {
+      if (flowPinned) return;
+      const tip = flowTip();
+      const label = event.target.closest(".flow-label");
+      const series = event.target.closest(".flow-series");
+      const active = series || label;
+      paint(active?.dataset.name || null);
+      if (!active) { tip.classList.remove("show"); return; }
+      const value = series?.dataset.label || label?.querySelector("text")?.textContent?.split(" ").at(-1) || "";
+      tip.textContent = series ? `${series.dataset.name} ${series.dataset.label}` : `${label.dataset.name} ${value}`;
+      tip.style.left = `${event.clientX + 14}px`;
+      tip.style.top = `${event.clientY - 34}px`;
+      tip.classList.add("show");
+    });
+    chart?.addEventListener("mouseleave", () => {
+      paint(flowPinned);
+      if (!flowPinned) $("#flow-tip")?.classList.remove("show");
+    });
+  }
+}
+
 function renderAll() {
   renderHeader();
   renderPulse();
@@ -489,6 +789,7 @@ async function loadEmotion(force = false) {
     renderAll();
     loadNews();
     await loadAnomalies(force);
+    await loadFundFlow();
 
   } catch (error) {
     const notReady = error.code === "not_ready";
@@ -602,6 +903,7 @@ function exportCardSources() {
   add($("#theme-ranking"), "热度排名");
   add($(".catalyst-panel"), "事件催化");
   add($(".timeline-panel"), "情绪路径");
+  add($(".flow-panel"), "资金流向");
   return sources;
 }
 
@@ -936,7 +1238,7 @@ setInterval(updateRefreshButton, 30_000);
 let resizeTimer = null;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { if (data) renderTimeline(); }, 150);
+  resizeTimer = setTimeout(() => { if (data) renderTimeline(); renderFundFlow(); }, 150);
 });
 
 function bindEvents() {
@@ -962,6 +1264,7 @@ function bindEvents() {
     document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }));
   watchSections();
+  bindFlowTools();
 }
 
 function setActiveTab(target) {
