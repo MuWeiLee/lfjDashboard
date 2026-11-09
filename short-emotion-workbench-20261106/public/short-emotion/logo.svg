@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ShortEmotion">
+  <!-- 第一阶段临时标识：情绪脉冲线。第二阶段换正式品牌 Logo。 -->
+  <rect width="32" height="32" rx="4" fill="#ff4015"/>
+  <path d="M5 18h5l3-8 5 13 3-7h6" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

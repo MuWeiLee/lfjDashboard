@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/short-emotion.js": {
+      "maxDuration": 60
+    }
+  },
+  "redirects": [
+    { "source": "/cn-short-emotion", "destination": "/cn", "permanent": false },
+    { "source": "/cn-short-emotion/", "destination": "/cn", "permanent": false },
+    { "source": "/tw-short-emotion", "destination": "/tw", "permanent": false },
+    { "source": "/tw-short-emotion/", "destination": "/tw", "permanent": false },
+    { "source": "/short-emotion", "destination": "/cn", "permanent": false },
+    { "source": "/short-emotion/", "destination": "/cn", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/short-emotion/index.html" },
+    { "source": "/cn", "destination": "/short-emotion/index.html" },
+    { "source": "/cn/", "destination": "/short-emotion/index.html" },
+    { "source": "/tw", "destination": "/short-emotion/index.html" },
+    { "source": "/tw/", "destination": "/short-emotion/index.html" },
+    { "source": "/zt", "destination": "/short-emotion/limit.html" },
+    { "source": "/zt/", "destination": "/short-emotion/limit.html" }
+  ]
+}
